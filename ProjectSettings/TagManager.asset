@@ -50,5 +50,8 @@ TagManager:
   - name: Vegetation
     uniqueID: 1815101599
     locked: 0
+  - name: Object
+    uniqueID: 4139621919
+    locked: 0
   m_RenderingLayers:
   - Default
