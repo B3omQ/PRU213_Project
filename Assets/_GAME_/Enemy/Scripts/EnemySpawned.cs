@@ -4,8 +4,8 @@ using UnityEngine;
 public class EnemySpawned : MonoBehaviour
 {
     [SerializeField]
-    List<GameObject> prefabs;
-    [SerializeField] List<float> spawnRates; 
+    public List<GameObject> prefabs;
+    [SerializeField] public List<float> spawnRates; 
     [SerializeField]
     float period = 1;
     [SerializeField]
@@ -16,7 +16,8 @@ public class EnemySpawned : MonoBehaviour
     void Start()
     {
         pool = new List<GameObject>();
-
+        Debug.Log(prefabs.Count + " prefabs loaded");
+        Debug.Log(pool.Count + " objects in pool after Start");
         for (int i = 0; i < prefabs.Count; i++)
         {
             int count = Mathf.RoundToInt(poolSize * spawnRates[i]);
@@ -27,6 +28,7 @@ public class EnemySpawned : MonoBehaviour
                 pool.Add(o);
             }
         }
+
     }
 
     // Update is called once per frame
@@ -53,8 +55,12 @@ public class EnemySpawned : MonoBehaviour
     GameObject GetGame()
     {
         foreach (GameObject o in pool)
-
-            if (o.activeSelf == false) return o;
+        {
+            if (o.activeSelf == false)
+            {
+                return o;
+            }
+        }
         return null;
     }
 }
