@@ -117,6 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
   id: 1
+  Name: CropSeed
 --- !u!212 &-8804204674992163344
 SpriteRenderer:
   m_ObjectHideFlags: 0
