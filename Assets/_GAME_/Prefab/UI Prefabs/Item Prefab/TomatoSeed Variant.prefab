@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8804204674992163344, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -167575426429258219, guid: d9f92f15219ef274babc99d11856c65d, type: 3}
     - target: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_Name
       value: TomatoSeed Variant
@@ -82,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 963.2064
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 474.26846
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
