@@ -13,16 +13,33 @@ public class InventoryController : MonoBehaviour
     {
         _itemDictionary = FindAnyObjectByType<ItemDictionary>();
 
-        for (int i = 0; i < _slotCount; i++)
+        //for (int i = 0; i < _slotCount; i++)
+        //{
+        //    Slot slot = Instantiate(_slotPrefab, _inventoryPanel.transform).GetComponent<Slot>();
+        //    if (i < _itemPrefabs.Length)
+        //    {
+        //        GameObject item = Instantiate(_itemPrefabs[i], slot.transform);
+        //        item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        //        slot._currentItem = item;
+        //    }
+        //}
+    }
+
+    public bool AddItem(GameObject itemPrefab)
+    {
+        foreach(Transform slotTransform in _inventoryPanel.transform)
         {
-            Slot slot = Instantiate(_slotPrefab, _inventoryPanel.transform).GetComponent<Slot>();
-            if (i < _itemPrefabs.Length)
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot != null && slot._currentItem == null)
             {
-                GameObject item = Instantiate(_itemPrefabs[i], slot.transform);
-                item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                slot._currentItem = item;
+                GameObject newItem = Instantiate(itemPrefab, slotTransform);
+                newItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                slot._currentItem = newItem;
+                return true;
             }
         }
+        Debug.Log("Inventory is full");
+        return false;
     }
     public List<InventorySaveData> GetInventoryItems()
     {
@@ -39,30 +56,64 @@ public class InventoryController : MonoBehaviour
         return invData;
     }
 
+    public void EnsureSlots()
+    {
+        if (_inventoryPanel.transform.childCount < _slotCount)
+        {
+            // clear tất cả slot cũ (nếu có)
+            foreach (Transform child in _inventoryPanel.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // tạo lại slot mới
+            for (int i = 0; i < _slotCount; i++)
+            {
+                Instantiate(_slotPrefab, _inventoryPanel.transform);
+            }
+        }
+    }
+
+
+
     public void SetInventoryItems(List<InventorySaveData> inventorySaveData)
     {
-        foreach (Transform child in _inventoryPanel.transform)
+        EnsureSlots(); // luôn chắc chắn có đủ slot
+
+        // clear items trong slot
+        foreach (Transform slotTransform in _inventoryPanel.transform)
         {
-            Destroy(child.gameObject);
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot._currentItem != null)
+            {
+                Destroy(slot._currentItem);
+                slot._currentItem = null;
+            }
         }
 
-        for (int i = 0; i < _slotCount; i++)
-        {
-            Instantiate(_slotPrefab, _inventoryPanel.transform);
-        }
-
-        foreach(InventorySaveData data in inventorySaveData)
+        // đặt lại item
+        foreach (InventorySaveData data in inventorySaveData)
         {
             if (data._slotIndex < _slotCount)
             {
                 Slot slot = _inventoryPanel.transform.GetChild(data._slotIndex).GetComponent<Slot>();
                 GameObject itemPrefab = _itemDictionary.GetItemPrefab(data._itemId);
+
                 if (itemPrefab != null)
                 {
                     GameObject item = Instantiate(itemPrefab, slot.transform);
+                    item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                     slot._currentItem = item;
+                    Debug.Log($"Loaded item {data._itemId} in slot {data._slotIndex}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Item id {data._itemId} not found in dictionary");
                 }
             }
         }
     }
+
+
+
 }
