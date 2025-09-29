@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: id
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2021369016224955755, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+      propertyPath: Name
+      value: TomatoSeed
+      objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
