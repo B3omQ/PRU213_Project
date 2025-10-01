@@ -1,13 +1,53 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerCollector : MonoBehaviour
 {
     private InventoryController _inventoryController;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [Header("Attack Settings")]
+    public Transform attackPoint;     // điểm tấn công (child của Player)
+    public float attackRadius = 0.6f; // bán kính vòng tròn tấn công
+    public int damage = 1;            // sát thương mỗi hit
+    public LayerMask treeLayer;       // chọn layer = "Tree" trong Inspector
+    public float attackCooldown = 0.5f;
+    float lastAttackTime;
     void Start()
     {
         _inventoryController = FindAnyObjectByType<InventoryController>();
     }
+    void Update() 
+    {
+        if (InputManager.AttackPressed)
+        {
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                Attack();
+                lastAttackTime = Time.time;
+            }
+        }
+    }
+
+    void Attack()
+    {
+        Collider2D[] hitTrees = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, treeLayer);
+        Debug.Log($"Hit count: {hitTrees.Length}");
+
+        foreach (Collider2D treeCollider in hitTrees)
+        {
+            Crop crop = treeCollider.GetComponent<Crop>();
+            if (crop != null)
+            {
+                crop.TakeDamage(damage);
+            }
+            else
+            {
+                Debug.Log($"{treeCollider.name} không có Crop (kể cả ở parent)!");
+            }
+        }
+
+        Debug.Log("Player attacked!");
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
