@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2021369016224955755}
   - component: {fileID: -8804204674992163344}
   - component: {fileID: -5298711885473605793}
+  - component: {fileID: 189581318251478550}
   m_Layer: 5
   m_Name: CropSeed
   m_TagString: Item
@@ -104,6 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ccac5301b4f0a5489739c58aa001f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dragitem
+  _minDropdis: 2
+  _maxDropdis: 2
 --- !u!114 &2021369016224955755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,3 +215,18 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.46875
+--- !u!114 &189581318251478550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45921582237345401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6037059052fc28f46bf61c3dcd3e82b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BounceEffect
+  _bounceHeight: 0.3
+  _bounceDuration: 0.4
+  _bounceCount: 1

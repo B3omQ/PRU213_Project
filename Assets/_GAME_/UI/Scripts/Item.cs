@@ -15,4 +15,9 @@ public class Item : MonoBehaviour
             itemPickupUI.Instance.ShowItemPickup(Name, itemIcon);
         }
     }
+
+    public virtual void UseItem()
+    {
+        Debug.Log("Using item" + Name);
+    }
 }
