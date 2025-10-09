@@ -9,6 +9,18 @@ public class InventoryController : MonoBehaviour
     public GameObject _slotPrefab;
     public int _slotCount;
     public GameObject[] _itemPrefabs;
+
+    public static InventoryController _instance { get; private set; }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+    }
     void Start()
     {
         _itemDictionary = FindAnyObjectByType<ItemDictionary>();
@@ -27,7 +39,29 @@ public class InventoryController : MonoBehaviour
 
     public bool AddItem(GameObject itemPrefab)
     {
-        foreach(Transform slotTransform in _inventoryPanel.transform)
+        Item itemToAdd = itemPrefab.GetComponent<Item>();
+        if (itemToAdd == null)
+        {
+            return false;
+        }
+        //check if item type in inventory ?
+        foreach (Transform slotTransform in _inventoryPanel.transform)
+        {
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot != null && slot._currentItem != null)
+            {
+                Item slotItem = slot._currentItem.GetComponent<Item>();
+                if (slotItem != null && slotItem.id == itemToAdd.id)
+                {
+                    //same item == stack 
+                    slotItem.AddToStack();
+                    return true;
+                }
+            }
+        }
+
+        //Look for empty slot
+        foreach (Transform slotTransform in _inventoryPanel.transform)
         {
             Slot slot = slotTransform.GetComponent<Slot>();
             if (slot != null && slot._currentItem == null)
@@ -50,7 +84,7 @@ public class InventoryController : MonoBehaviour
             if (slot._currentItem != null) 
             {
                 Item item = slot._currentItem.GetComponent<Item>();
-                invData.Add(new InventorySaveData { _itemId = item.id, _slotIndex = slotTranform.GetSiblingIndex() });
+                invData.Add(new InventorySaveData { _itemId = item.id, _slotIndex = slotTranform.GetSiblingIndex(), _qantity = item.quantity });
             }
         }
         return invData;
@@ -103,6 +137,14 @@ public class InventoryController : MonoBehaviour
                 {
                     GameObject item = Instantiate(itemPrefab, slot.transform);
                     item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                    Item itemComponent = item.GetComponent<Item>();
+                    if(itemComponent != null && data._qantity > 1)
+                    {
+                        itemComponent.quantity = data._qantity;
+                        itemComponent.UpdateQuantityDisplay();
+                    }
+
                     slot._currentItem = item;
                     Debug.Log($"Loaded item {data._itemId} in slot {data._slotIndex}");
                 }
