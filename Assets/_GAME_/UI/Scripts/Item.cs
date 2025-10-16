@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,14 @@ public class Item : MonoBehaviour
 
     private TMP_Text quantityText;
 
+    private Collider2D _collider;
+    private bool canBePickedUp = false;
+
     private void Awake()
     {
         quantityText = GetComponentInChildren<TMP_Text>();
+        _collider = GetComponent<Collider2D>();
+
         UpdateQuantityDisplay();
     }
 
@@ -60,6 +66,23 @@ public class Item : MonoBehaviour
 
     public virtual void UseItem()
     {
-        Debug.Log("Using item" + Name);
+       
+    }
+
+    public virtual void OnEnable()
+    {
+        StartCoroutine(EnablePickupAfterDelay(2f));
+    }
+
+    public virtual IEnumerator EnablePickupAfterDelay(float delay)
+    {
+        canBePickedUp = false;
+        yield return new WaitForSeconds(delay);
+        canBePickedUp = true;
+    }
+
+    public virtual bool CanBePickedUp()
+    {
+        return canBePickedUp;
     }
 }

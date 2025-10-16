@@ -54,7 +54,7 @@ public class PlayerCollector : MonoBehaviour
         if (collision.CompareTag("Item"))
         {
             Item item = collision.GetComponent<Item>();
-            if (item != null)
+            if (item != null && item.CanBePickedUp()) // chỉ nhặt khi được phép
             {
                 bool itemAdded = _inventoryController.AddItem(collision.gameObject);
                 if (itemAdded)
