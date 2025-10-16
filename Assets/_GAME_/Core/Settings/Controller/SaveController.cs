@@ -8,6 +8,7 @@ public class SaveController : MonoBehaviour
 {
     private string _saveLocation;
     private InventoryController _inventoryController;
+    private HotBarController _HotBarController;
 
     private IEnumerator Start()
     {
@@ -15,6 +16,7 @@ public class SaveController : MonoBehaviour
         Debug.Log("Save file path: " + _saveLocation);
 
         _inventoryController = FindAnyObjectByType<InventoryController>();
+        _HotBarController = FindAnyObjectByType<HotBarController>();
 
         // wait one frame so InventoryController can finish Start()
         yield return null;
@@ -28,7 +30,9 @@ public class SaveController : MonoBehaviour
         {
             _playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
             _mapBoundary = FindAnyObjectByType<CinemachineConfiner2D>().BoundingShape2D.gameObject.name,
-            _inventorySaveData = _inventoryController.GetInventoryItems()
+            _inventorySaveData = _inventoryController.GetInventoryItems(),
+            _hotBarSaveData = _HotBarController.GetHotBarItems()
+            
         };
 
         string json = JsonUtility.ToJson(saveData, true); // pretty print
@@ -65,6 +69,7 @@ public class SaveController : MonoBehaviour
 
             // rebuild inventory UI
             _inventoryController.SetInventoryItems(saveData._inventorySaveData);
+            _HotBarController.SetHotBarItems(saveData._hotBarSaveData);
         }
         else
         {
