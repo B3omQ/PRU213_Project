@@ -78,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -155345377
-  m_SortingLayer: 4
+  m_SortingLayerID: 1815101599
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -4968072622433853253, guid: d9f92f15219ef274babc99d11856c65d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -122,7 +122,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Crop
   maxHealth: 1
   dropPrefabs:
-  - {fileID: 880424657342821642, guid: 1248d8ebc2a48d340b79fdc2af059222, type: 3}
+  - {fileID: 45921582237345401, guid: e2847f7d22fcb494298e26b8424c4c26, type: 3}
   minDrops: 1
   maxDrops: 3
   dropForce: 4
