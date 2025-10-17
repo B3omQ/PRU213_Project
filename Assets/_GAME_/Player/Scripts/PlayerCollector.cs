@@ -11,6 +11,11 @@ public class PlayerCollector : MonoBehaviour
     public LayerMask treeLayer;       // chọn layer = "Tree" trong Inspector
     public float attackCooldown = 0.5f;
     float lastAttackTime;
+
+
+    [Header("Health System")]
+    public int maxHealth = 10;
+    private int currentHealth;
     void Start()
     {
         _inventoryController = FindAnyObjectByType<InventoryController>();
