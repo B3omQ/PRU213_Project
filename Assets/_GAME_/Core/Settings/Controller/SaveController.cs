@@ -3,25 +3,45 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Unity.Cinemachine;
+using System.Linq;
 
 public class SaveController : MonoBehaviour
 {
     private string _saveLocation;
     private InventoryController _inventoryController;
     private HotBarController _HotBarController;
+    private Chest[] _chests;
 
-    private IEnumerator Start()
+    void Start()
+    {
+        InitalizeComponents();
+        LoadGame();
+    }
+    private void InitalizeComponents()
     {
         _saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
-        Debug.Log("Save file path: " + _saveLocation);
+                Debug.Log("Save file path: " + _saveLocation);
 
         _inventoryController = FindAnyObjectByType<InventoryController>();
         _HotBarController = FindAnyObjectByType<HotBarController>();
+        _chests = FindObjectsOfType<Chest>();
+    }
 
-        // wait one frame so InventoryController can finish Start()
-        yield return null;
+    private List<ChestSaveData> GetChestsState()
+    {
+        List<ChestSaveData> chestStates = new List<ChestSaveData>();
 
-        LoadGame();
+        foreach (Chest chest in _chests)
+        {
+            ChestSaveData chestSaveData = new ChestSaveData
+            {
+                _chestId = chest._chestId,
+                _isOpened = chest._isOpened,
+            };
+            chestStates.Add(chestSaveData);
+        }
+
+        return chestStates;
     }
 
     public void SaveGame()
@@ -31,8 +51,8 @@ public class SaveController : MonoBehaviour
             _playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
             _mapBoundary = FindAnyObjectByType<CinemachineConfiner2D>().BoundingShape2D.gameObject.name,
             _inventorySaveData = _inventoryController.GetInventoryItems(),
-            _hotBarSaveData = _HotBarController.GetHotBarItems()
-            
+            _hotBarSaveData = _HotBarController.GetHotBarItems(),
+            _chestSaveData = GetChestsState(),
         };
 
         string json = JsonUtility.ToJson(saveData, true); // pretty print
@@ -70,11 +90,25 @@ public class SaveController : MonoBehaviour
             // rebuild inventory UI
             _inventoryController.SetInventoryItems(saveData._inventorySaveData);
             _HotBarController.SetHotBarItems(saveData._hotBarSaveData);
+            LoadChestsSaveData(saveData._chestSaveData);
         }
         else
         {
             Debug.Log("No save file found. Creating one...");
             SaveGame();
+        }
+    }
+
+    private void LoadChestsSaveData(List<ChestSaveData> chestStates)
+    {
+        foreach (Chest chest in _chests)
+        {
+            ChestSaveData chestSaveData = chestStates.FirstOrDefault(c => c._chestId == chest._chestId);
+
+            if (chestSaveData != null)
+            {
+                chest.SetOpened(chestSaveData._isOpened);
+            }
         }
     }
 }
