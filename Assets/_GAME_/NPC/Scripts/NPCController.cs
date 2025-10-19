@@ -10,7 +10,11 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private int _dialogueIndex;
     private bool _isTyping;
-
+    private DialogueManager _dialogueManager;
+    private void Start()
+    {
+        _dialogueManager = DialogueManager.Instance;
+    }
     public bool CanInteract()
     {
         // Only allow starting a new dialogue if no dialogue is currently active
@@ -49,6 +53,22 @@ public class NPCController : MonoBehaviour, IInteractable
             );
             _isTyping = false;
             return;
+        }
+
+        _dialogueManager.ClearChoices();
+
+        if (_dialogueData._endDialogueLines.Length > _dialogueIndex && _dialogueData._endDialogueLines[_dialogueIndex])
+        {
+            EndDialogue();
+            return;
+        }
+        foreach (DialogueChoice dialogueChoice in _dialogueData._choices)
+        {
+            if (dialogueChoice._dialogueIndex == _dialogueIndex)
+            {
+                DisplayChoices(dialogueChoice);
+                return;
+            }
         }
 
         _dialogueIndex++;
@@ -92,10 +112,32 @@ public class NPCController : MonoBehaviour, IInteractable
         }
     }
 
+    private void DisplayChoices(DialogueChoice choice)
+    {
+
+        Debug.Log($"[DisplayChoices] Showing choices for dialogue index {_dialogueIndex}");
+        for (int i = 0; i < choice._choices.Length; i++)
+        {
+            int nextIndex = choice._nextDialogueIndexes[i];
+            _dialogueManager.CreateChoicebutton(choice._choices[i], () => ChoiceOption(nextIndex));
+        }
+
+        Canvas.ForceUpdateCanvases();
+    }
+
+    private void ChoiceOption(int nextIndex)
+    {
+        _dialogueIndex = nextIndex;
+        _dialogueManager.ClearChoices();
+        ShowCurrentLine();
+    }
+
     private void EndDialogue()
     {
         DialogueManager.Instance.HideDialogue();
         StopAllCoroutines();
         _isTyping = false;
     }
+
+
 }

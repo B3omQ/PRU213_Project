@@ -1,28 +1,20 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Chest : MonoBehaviour, IInteractable
 {
-    public bool _isOpened {  get; private set; }
-    public string _chestId {  get; private set; }
+    public bool _isOpened { get; private set; }
+    public string _chestId { get; private set; }
 
-    public GameObject _itemPrefab;
+    [Header("Chest Settings")]
+    public List<GameObject> _itemPrefabs; // Danh sách item
     public Sprite _openedChest;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float _dropSpacing = 0.5f; // Khoảng cách giữa các item rơi
 
     public void Interact()
     {
-        if(!CanInteract()) return;
-         OpenChest();
+        if (!CanInteract()) return;
+        OpenChest();
     }
 
     public bool CanInteract()
@@ -34,16 +26,21 @@ public class Chest : MonoBehaviour, IInteractable
     {
         SetOpened(true);
 
-        if (_itemPrefab)
+        if (_itemPrefabs != null && _itemPrefabs.Count > 0)
         {
-            GameObject droppedItem = Instantiate(_itemPrefab, transform.position + Vector3.down, Quaternion.identity);
-            droppedItem.GetComponent<BounceEffect>().StartBounce();
+            for (int i = 0; i < _itemPrefabs.Count; i++)
+            {
+                Vector3 dropPos = transform.position + Vector3.down + new Vector3(i * _dropSpacing, 0, 0);
+                GameObject droppedItem = Instantiate(_itemPrefabs[i], dropPos, Quaternion.identity);
+                droppedItem.GetComponent<BounceEffect>()?.StartBounce();
+            }
         }
     }
 
     public void SetOpened(bool opened)
     {
-        if (_isOpened = opened)
+        _isOpened = opened;
+        if (_isOpened)
         {
             GetComponent<SpriteRenderer>().sprite = _openedChest;
         }
