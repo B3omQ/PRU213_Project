@@ -17,8 +17,17 @@ MonoBehaviour:
   _dialogueLines:
   - Well hello
   - Are you a farmer?
-  _autoProgressLines: 0100
+  - So you are! can you help me with some stuff?
+  - oh.. that bad..
+  _autoProgressLines: 0101
+  _endDialogueLines: 00000101
   _typingSpeed: 0.05
   _voiceSound: {fileID: 0}
   _voicePitch: 1
   _autoProgressDelay: 1.5
+  _choices:
+  - _dialogueIndex: 1
+    _choices:
+    - yes
+    - um.. i dont know
+    _nextDialogueIndexes: 0200000003000000

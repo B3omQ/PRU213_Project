@@ -10,7 +10,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private Image portraitImage;
-
+    [SerializeField] public Transform choiceContainer;
+    [SerializeField] public GameObject choiceButtonPrefab;
     private bool isTyping;
 
     private void Awake()
@@ -40,5 +41,19 @@ public class DialogueManager : MonoBehaviour
     public bool IsActive() => dialoguePanel.activeSelf;
 
     public string GetCurrentText() => dialogueText.text;
+
+    public void ClearChoices()
+    {
+        foreach (Transform child in choiceContainer) Destroy(child.gameObject);
+    }
+
+    public GameObject CreateChoicebutton(string choiceText, UnityEngine.Events.UnityAction onclick)
+    {
+        GameObject choiceButton = Instantiate(choiceButtonPrefab, choiceContainer);
+        choiceButton.GetComponentInChildren<TMP_Text>().text = choiceText;
+        choiceButton.GetComponent<Button>().onClick.AddListener(onclick);
+        return choiceButton;    
+    }
+
 }
 
