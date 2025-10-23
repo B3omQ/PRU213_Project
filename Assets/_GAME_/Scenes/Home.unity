@@ -22558,6 +22558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 902359690}
   - component: {fileID: 902359691}
+  - component: {fileID: 902359692}
   m_Layer: 0
   m_Name: QuestController
   m_TagString: Untagged
@@ -22595,6 +22596,19 @@ MonoBehaviour:
   _questListContent: {fileID: 1619878091}
   _questEntryPrefab: {fileID: 3973258754194973504, guid: 4777c073a372a5c429158df46d060d7a, type: 3}
   _objectiveTextPrefab: {fileID: 1199876615358498410, guid: 9a9450a2cb30a5c4e9d95bda45199a9d, type: 3}
+--- !u!114 &902359692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902359689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43225de26e557f04d858885b0cbeb127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestController
+  activateQuests: []
 --- !u!1 &918531161
 GameObject:
   m_ObjectHideFlags: 0
@@ -24132,7 +24146,6 @@ GameObject:
   - component: {fileID: 1553062859}
   - component: {fileID: 1553062861}
   - component: {fileID: 1553062862}
-  - component: {fileID: 1553062863}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -24205,19 +24218,6 @@ MonoBehaviour:
   portraitImage: {fileID: 437747928}
   choiceContainer: {fileID: 1073199407}
   choiceButtonPrefab: {fileID: 2122232759009694095, guid: 64a6ac756f454cb47b31e060c6cd72ca, type: 3}
---- !u!114 &1553062863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553062858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43225de26e557f04d858885b0cbeb127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestController
-  activateQuests: []
 --- !u!1 &1591964916
 GameObject:
   m_ObjectHideFlags: 0

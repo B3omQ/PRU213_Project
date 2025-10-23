@@ -10,6 +10,7 @@ public class SaveData
     public List<InventorySaveData> _inventorySaveData;
     public List<InventorySaveData> _hotBarSaveData;
     public List<ChestSaveData> _chestSaveData;
+    public List<Guest.QuestProgress> _questProgressData;
 }
 
 [System.Serializable]

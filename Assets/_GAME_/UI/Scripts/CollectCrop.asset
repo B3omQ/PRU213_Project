@@ -21,3 +21,8 @@ MonoBehaviour:
     _type: 0
     _requireAmount: 5
     _currentAmount: 0
+  - _questOpjectiveId: 2
+    _questOpjectiveDes: Collect 5 Tomato Seed
+    _type: 0
+    _requireAmount: 5
+    _currentAmount: 0
