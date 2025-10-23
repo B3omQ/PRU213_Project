@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
-using Unity.Cinemachine;
 using System.Linq;
+using Unity.Cinemachine;
+using UnityEditor.Overlays;
+using UnityEngine;
 
 public class SaveController : MonoBehaviour
 {
@@ -96,6 +97,8 @@ public class SaveController : MonoBehaviour
         {
             Debug.Log("No save file found. Creating one...");
             SaveGame();
+            _inventoryController.SetInventoryItems(new List<InventorySaveData>());
+            _HotBarController.SetHotBarItems(new List<InventorySaveData>());
         }
     }
 

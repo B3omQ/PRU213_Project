@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 898116888162086853}
   - component: {fileID: 7426473810509937592}
   - component: {fileID: 6622382416518684934}
-  - component: {fileID: 7602426869936273926}
+  - component: {fileID: -5386030640606649931}
   m_Layer: 0
   m_Name: NPC 1
   m_TagString: Player
@@ -253,7 +253,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7602426869936273926
+--- !u!114 &-5386030640606649931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,7 +266,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCController
   _dialogueData: {fileID: 11400000, guid: be34dd5b5404ab74d8de6f3643b1df41, type: 2}
-  _dialoguePanel: {fileID: 0}
-  _dialogueText: {fileID: 0}
-  _nameText: {fileID: 0}
-  _portraitImage: {fileID: 0}

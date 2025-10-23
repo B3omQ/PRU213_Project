@@ -94,13 +94,10 @@ public class InventoryController : MonoBehaviour
     {
         if (_inventoryPanel.transform.childCount < _slotCount)
         {
-            // clear tất cả slot cũ (nếu có)
             foreach (Transform child in _inventoryPanel.transform)
             {
                 Destroy(child.gameObject);
             }
-
-            // tạo lại slot mới
             for (int i = 0; i < _slotCount; i++)
             {
                 Instantiate(_slotPrefab, _inventoryPanel.transform);

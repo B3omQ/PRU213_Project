@@ -16,11 +16,12 @@ MonoBehaviour:
   _npcPortrait: {fileID: -3147850456077103430, guid: d34e63af287ae3f4c8c75dde2abfaec5, type: 3}
   _dialogueLines:
   - Well hello
-  - Are you a farmer?
-  - So you are! can you help me with some stuff?
+  - Are you a farmer?can you help me with collecting some crop?
+  - im counting on you!
   - oh.. that bad..
-  _autoProgressLines: 0101
-  _endDialogueLines: 00000101
+  - You got all the crop? thank u <3
+  _autoProgressLines: 0101000000
+  _endDialogueLines: 0000010101
   _typingSpeed: 0.05
   _voiceSound: {fileID: 0}
   _voicePitch: 1
@@ -31,3 +32,7 @@ MonoBehaviour:
     - yes
     - um.. i dont know
     _nextDialogueIndexes: 0200000003000000
+    _givesQuest: 0100
+  _questInProgressIndex: 6
+  _questCompleteIndex: 7
+  quest: {fileID: 11400000, guid: 24bd91ec18fbede40bfb8ab48836da50, type: 2}
