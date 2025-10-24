@@ -54,7 +54,7 @@ public class Item : MonoBehaviour
             quantityText.text = quantity > 1 ? quantity.ToString() : "";
         }
     }
-    public virtual void PickUp()
+    public virtual void ShowPopUp()
     {
         Sprite itemIcon = GetComponent<Image>().sprite;
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
-using static Guest;
+using static Quest;
 
 public class QuestUI : MonoBehaviour
 {

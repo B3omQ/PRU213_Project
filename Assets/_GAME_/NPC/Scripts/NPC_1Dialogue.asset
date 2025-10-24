@@ -21,7 +21,7 @@ MonoBehaviour:
   - oh.. that bad..
   - You got all the crop? thank u <3
   _autoProgressLines: 0101000000
-  _endDialogueLines: 0000010101
+  _endDialogueLines: 0000000101
   _typingSpeed: 0.05
   _voiceSound: {fileID: 0}
   _voicePitch: 1
@@ -33,6 +33,6 @@ MonoBehaviour:
     - um.. i dont know
     _nextDialogueIndexes: 0200000003000000
     _givesQuest: 0100
-  _questInProgressIndex: 6
-  _questCompleteIndex: 7
+  _questInProgressIndex: 2
+  _questCompleteIndex: 4
   quest: {fileID: 11400000, guid: 24bd91ec18fbede40bfb8ab48836da50, type: 2}

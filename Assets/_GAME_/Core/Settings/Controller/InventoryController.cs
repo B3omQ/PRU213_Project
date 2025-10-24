@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor.Experimental;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
@@ -170,6 +171,26 @@ public class InventoryController : MonoBehaviour
         RebuidItemCounts();
     }
 
+    public void RemoveItemsFromInventory(int itemId, int amountToRemove)
+    {
+        foreach (Transform slotTranform in _inventoryPanel.transform)
+        {
+            if(amountToRemove <= 0) break;
 
+            Slot slot = slotTranform.GetComponent<Slot>();
+            if(slot?._currentItem?.GetComponent<Item>() is Item item && item.id == itemId)
+            {
+                int removed = Mathf.Min(amountToRemove, item.quantity);
+                item.RemoveFromStack(removed);
+                amountToRemove -= removed;
+
+                if (item.quantity == 0)
+                {
+                    Destroy(slot._currentItem);
+                    slot._currentItem = null;
+                }
+            }
+        }
+    }
 
 }

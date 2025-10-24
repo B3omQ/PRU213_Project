@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using static Guest;
+using static Quest;
 
 
 [CreateAssetMenu(menuName = "Quests/Quest")]
-public class Guest : ScriptableObject
+public class Quest : ScriptableObject
 {
     public string _questId;
     public string _questName;
     public string _description;
     public List<QuestObjective> _objectives;
+    public List<QuestReward> _questReward;
 
     private void OnValidate()
     {
@@ -41,9 +42,9 @@ public class Guest : ScriptableObject
     [System.Serializable]
     public class QuestProgress
     {
-        public Guest quest;
+        public Quest quest;
         public List<QuestObjective> objectives;
-        public QuestProgress(Guest quest)
+        public QuestProgress(Quest quest)
         {
             this.quest = quest;
             objectives  = new List<QuestObjective>();
@@ -62,5 +63,21 @@ public class Guest : ScriptableObject
         }
         public bool IsCompleted => objectives.TrueForAll(o => o._isCompleted);
         public string QuestID => quest._questId;
+    }
+
+    [System.Serializable]
+    public class QuestReward
+    {
+        public RewardType _type;
+        public int _rewardId;
+        public int _amount = 1;
+    }
+
+    public enum RewardType
+    {
+        Item,
+        Gold,
+        Exp,
+        Custom
     }
 }
