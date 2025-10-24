@@ -54,5 +54,8 @@ TagManager:
   - name: Object
     uniqueID: 4139621919
     locked: 0
+  - name: emote
+    uniqueID: 2881162505
+    locked: 0
   m_RenderingLayers:
   - Default

@@ -11,6 +11,14 @@ public class NPCController : MonoBehaviour, IInteractable
     private int _dialogueIndex;
     private bool _isTyping;
     private DialogueManager _dialogueManager;
+
+    private enum QuestState
+    {
+        NotStarted,
+        InProgress,
+        Completed
+    }
+    private QuestState _questState = QuestState.NotStarted;
     private void Start()
     {
         _dialogueManager = DialogueManager.Instance;
@@ -37,8 +45,46 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private void StartDialogue()
     {
-        _dialogueIndex = 0;
+
+        SyncQuestState();
+        if (_questState == QuestState.NotStarted)
+        {
+            _dialogueIndex = 0;
+        }
+        else if(_questState == QuestState.InProgress)
+        {
+            _dialogueIndex = _dialogueData._questInProgressIndex;
+        }
+        else if (_questState == QuestState.Completed)
+        {
+            _dialogueIndex = _dialogueData._questCompleteIndex;
+        }
         ShowCurrentLine();
+    }
+
+    private void SyncQuestState()
+    {
+        if (_dialogueData.quest == null) return;
+
+        string questId = _dialogueData.quest._questId;
+        bool completed = QuestController.Instance.IsQuestCompleted(questId);
+        bool handedIn = QuestController.Instance.isQuestHandedIn(questId);
+        bool active = QuestController.Instance.IsQuestActive(questId);
+
+        Debug.Log($"[SyncQuestState] quest={questId}, completed={completed}, handedIn={handedIn}, active={active}");
+
+        if (completed || handedIn)
+        {
+            _questState = QuestState.Completed;
+        }
+        else if (active)
+        {
+            _questState = QuestState.InProgress;
+        }
+        else
+        {
+            _questState = QuestState.NotStarted;
+        }
     }
 
     private void NextLine()
@@ -84,6 +130,12 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private void ShowCurrentLine()
     {
+        if (_dialogueIndex < 0 || _dialogueIndex >= _dialogueData._dialogueLines.Length)
+        {
+            Debug.LogWarning($"[NPCController] Invalid dialogue index {_dialogueIndex} for NPC {_dialogueData._npcName}");
+            EndDialogue();
+            return;
+        }
         StopAllCoroutines();
         StartCoroutine(TypeLine(_dialogueData._dialogueLines[_dialogueIndex]));
     }
@@ -116,17 +168,30 @@ public class NPCController : MonoBehaviour, IInteractable
     {
 
         Debug.Log($"[DisplayChoices] Showing choices for dialogue index {_dialogueIndex}");
-        for (int i = 0; i < choice._choices.Length; i++)
+        int choiceCount = choice._choices.Length;
+        int nextCount = choice._nextDialogueIndexes.Length;
+        int questCount = choice._givesQuest.Length;
+
+        for (int i = 0; i < choiceCount; i++)
         {
-            int nextIndex = choice._nextDialogueIndexes[i];
-            _dialogueManager.CreateChoicebutton(choice._choices[i], () => ChoiceOption(nextIndex));
+            string text = choice._choices[i];
+
+            int nextIndex = (i < nextCount) ? choice._nextDialogueIndexes[i] : -1;
+            bool giveQuest = (i < questCount) && choice._givesQuest[i];
+
+            _dialogueManager.CreateChoicebutton(text, () => ChoiceOption(nextIndex, giveQuest));
         }
 
         Canvas.ForceUpdateCanvases();
     }
 
-    private void ChoiceOption(int nextIndex)
+    private void ChoiceOption(int nextIndex, bool giveQuest)
     {
+        if (giveQuest)
+        {
+            QuestController.Instance.AcceptQuest(_dialogueData.quest);
+            _questState = QuestState.InProgress;
+        }
         _dialogueIndex = nextIndex;
         _dialogueManager.ClearChoices();
         ShowCurrentLine();
@@ -134,10 +199,24 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private void EndDialogue()
     {
+        SyncQuestState();
+        Debug.Log($"[EndDialogue] questState={_questState}, " +
+              $"completed={QuestController.Instance.IsQuestCompleted(_dialogueData.quest._questId)}, " +
+              $"handedIn={QuestController.Instance.isQuestHandedIn(_dialogueData.quest._questId)}");
+        if (_questState == QuestState.Completed && !QuestController.Instance.isQuestHandedIn(_dialogueData.quest._questId))
+        {
+            handleQuestCompletion(_dialogueData.quest);
+        }
+
         DialogueManager.Instance.HideDialogue();
         StopAllCoroutines();
         _isTyping = false;
     }
 
+    void handleQuestCompletion(Quest quest)
+    {
+        RewardController.Instance.GiveQuestReward(quest);
+        QuestController.Instance.HandInQuest(quest._questId);
+    }
 
 }

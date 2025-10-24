@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor.Experimental;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
@@ -11,7 +13,8 @@ public class InventoryController : MonoBehaviour
     public GameObject[] _itemPrefabs;
 
     public static InventoryController _instance { get; private set; }
-
+    Dictionary<int, int> _itemsCountCache = new();
+    public event Action _onInventoryChanged;
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -24,18 +27,30 @@ public class InventoryController : MonoBehaviour
     void Start()
     {
         _itemDictionary = FindAnyObjectByType<ItemDictionary>();
-
-        //for (int i = 0; i < _slotCount; i++)
-        //{
-        //    Slot slot = Instantiate(_slotPrefab, _inventoryPanel.transform).GetComponent<Slot>();
-        //    if (i < _itemPrefabs.Length)
-        //    {
-        //        GameObject item = Instantiate(_itemPrefabs[i], slot.transform);
-        //        item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        //        slot._currentItem = item;
-        //    }
-        //}
+        RebuidItemCounts();
     }
+
+    public void RebuidItemCounts()
+    {
+        _itemsCountCache.Clear();
+
+        foreach (Transform slotTranform in _inventoryPanel.transform)
+        {
+            Slot slot = slotTranform.GetComponent<Slot>();
+            if (slot._currentItem != null)
+            {
+                Item item = slot._currentItem.GetComponent<Item>();
+                if (item != null)
+                {
+                    _itemsCountCache[item.id] = _itemsCountCache.GetValueOrDefault(item.id, 0) + item.quantity;
+                }
+            }
+        }
+
+        _onInventoryChanged?.Invoke();
+    }
+
+    public Dictionary<int, int> _getItemCounts() => _itemsCountCache;
 
     public bool AddItem(GameObject itemPrefab)
     {
@@ -55,6 +70,7 @@ public class InventoryController : MonoBehaviour
                 {
                     //same item == stack 
                     slotItem.AddToStack();
+                    RebuidItemCounts();
                     return true;
                 }
             }
@@ -69,6 +85,7 @@ public class InventoryController : MonoBehaviour
                 GameObject newItem = Instantiate(itemPrefab, slotTransform);
                 newItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                 slot._currentItem = newItem;
+                RebuidItemCounts();
                 return true;
             }
         }
@@ -94,13 +111,10 @@ public class InventoryController : MonoBehaviour
     {
         if (_inventoryPanel.transform.childCount < _slotCount)
         {
-            // clear tất cả slot cũ (nếu có)
             foreach (Transform child in _inventoryPanel.transform)
             {
                 Destroy(child.gameObject);
             }
-
-            // tạo lại slot mới
             for (int i = 0; i < _slotCount; i++)
             {
                 Instantiate(_slotPrefab, _inventoryPanel.transform);
@@ -154,8 +168,29 @@ public class InventoryController : MonoBehaviour
                 }
             }
         }
+        RebuidItemCounts();
     }
 
+    public void RemoveItemsFromInventory(int itemId, int amountToRemove)
+    {
+        foreach (Transform slotTranform in _inventoryPanel.transform)
+        {
+            if(amountToRemove <= 0) break;
 
+            Slot slot = slotTranform.GetComponent<Slot>();
+            if(slot?._currentItem?.GetComponent<Item>() is Item item && item.id == itemId)
+            {
+                int removed = Mathf.Min(amountToRemove, item.quantity);
+                item.RemoveFromStack(removed);
+                amountToRemove -= removed;
+
+                if (item.quantity == 0)
+                {
+                    Destroy(slot._currentItem);
+                    slot._currentItem = null;
+                }
+            }
+        }
+    }
 
 }

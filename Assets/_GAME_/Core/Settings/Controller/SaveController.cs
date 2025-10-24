@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
-using Unity.Cinemachine;
 using System.Linq;
+using Unity.Cinemachine;
+using UnityEditor.Overlays;
+using UnityEngine;
 
 public class SaveController : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class SaveController : MonoBehaviour
             _inventorySaveData = _inventoryController.GetInventoryItems(),
             _hotBarSaveData = _HotBarController.GetHotBarItems(),
             _chestSaveData = GetChestsState(),
+            _questProgressData = QuestController.Instance.activateQuests
         };
 
         string json = JsonUtility.ToJson(saveData, true); // pretty print
@@ -91,11 +93,15 @@ public class SaveController : MonoBehaviour
             _inventoryController.SetInventoryItems(saveData._inventorySaveData);
             _HotBarController.SetHotBarItems(saveData._hotBarSaveData);
             LoadChestsSaveData(saveData._chestSaveData);
+
+            QuestController.Instance.LoadQuestProgress(saveData._questProgressData);
         }
         else
         {
             Debug.Log("No save file found. Creating one...");
             SaveGame();
+            _inventoryController.SetInventoryItems(new List<InventorySaveData>());
+            _HotBarController.SetHotBarItems(new List<InventorySaveData>());
         }
     }
 

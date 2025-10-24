@@ -151,6 +151,8 @@ public class Dragitem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
         // Xoá item trong inventory sau khi thả hết ra ngoài
         Destroy(gameObject);
+
+        InventoryController._instance.RebuidItemCounts();
     }
 
 
