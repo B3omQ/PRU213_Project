@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -7,11 +7,29 @@ public class HeartBar : MonoBehaviour
 {
     public GameObject _heartPrefab;
     public PlayerHealth _playerHealth;
-    List<Heart> hearts = new List<Heart>();
+    List<Heart> _hearts = new List<Heart>();
 
+
+    private void Awake()
+    {
+        if (_playerHealth == null)
+            Debug.LogError($"{name}: PlayerHealth reference is missing!");
+    }
+    private void OnEnable()
+    {
+        PlayerHealth._OnplayerDamaged += DrawHearts;
+        PlayerHealth._OnplayerDeath += DrawHearts;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth._OnplayerDamaged -= DrawHearts;
+        PlayerHealth._OnplayerDeath -= DrawHearts;
+    }
     private void Start()
     {
-        DrawHearts();
+        CreateHearts();
+        UpdateHearts();
     }
 
     public void DrawHearts()
@@ -24,10 +42,10 @@ public class HeartBar : MonoBehaviour
             CreateEmptyHeart();
         }
 
-        for (int i = 0; i < hearts.Count; i++)
+        for (int i = 0; i < _hearts.Count; i++)
         {
             int heartStatusRemainder = (int)Mathf.Clamp(_playerHealth._health - (i * 2), 0, 4);
-            hearts[i].SetHeartImage((HeartStatus)heartStatusRemainder);
+            _hearts[i].SetHeartImage((HeartStatus)heartStatusRemainder);
         }
     }
     public void CreateEmptyHeart()
@@ -37,7 +55,7 @@ public class HeartBar : MonoBehaviour
 
         Heart heartComponent = newHeart.GetComponent<Heart>();
         heartComponent.SetHeartImage(HeartStatus.Empty);
-        hearts.Add(heartComponent);
+        _hearts.Add(heartComponent);
     }
 
     public void ClearHearts()
@@ -46,6 +64,45 @@ public class HeartBar : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
-        hearts = new List<Heart>();
+        _hearts = new List<Heart>();
+    }
+
+    private void CreateHearts()
+    {
+        // Xóa tim cũ nếu có
+        foreach (Transform child in transform)
+            Destroy(child.gameObject);
+        _hearts.Clear();
+
+        // Mỗi tim chứa 4 đơn vị máu (vì enum HeartStatus có 0-4)
+        int heartsToMake = Mathf.CeilToInt(_playerHealth._maxHealth / 4f);
+
+        for (int i = 0; i < heartsToMake; i++)
+        {
+            GameObject newHeart = Instantiate(_heartPrefab, transform);
+            newHeart.transform.SetParent(transform, false);
+
+            Heart heartComponent = newHeart.GetComponent<Heart>();
+            if (heartComponent == null)
+            {
+                Debug.LogError($"{_heartPrefab.name} prefab is missing Heart component!");
+                continue;
+            }
+
+            _hearts.Add(heartComponent);
+        }
+    }
+
+    private void UpdateHearts()
+    {
+        if (_playerHealth == null || _hearts.Count == 0)
+            return;
+
+        for (int i = 0; i < _hearts.Count; i++)
+        {
+            // Tính số máu còn lại trong mỗi tim (mỗi tim = 4 máu)
+            int heartValue = Mathf.Clamp((int)(_playerHealth._health - (i * 4)), 0, 4);
+            _hearts[i].SetHeartImage((HeartStatus)heartValue);
+        }
     }
 }
