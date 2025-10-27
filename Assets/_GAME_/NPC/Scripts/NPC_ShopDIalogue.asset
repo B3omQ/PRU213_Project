@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8598f8b79c27a6c4099dba57fa785d9c, type: 3}
+  m_Name: NPC_ShopDIalogue
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialog
+  _npcName: John
+  _npcPortrait: {fileID: -3670919054317736195, guid: 93082e9f3ac434d43a87fdb7478a1b30, type: 3}
+  _dialogueLines:
+  - Hello fellas
+  - Would you like to buy some goods?
+  - Have a great day!
+  _autoProgressLines: 010100
+  _endDialogueLines: 000001
+  _typingSpeed: 0.05
+  _voiceSound: {fileID: 0}
+  _voicePitch: 1
+  _autoProgressDelay: 1.5
+  _choices:
+  - _dialogueIndex: 1
+    _choices:
+    - Sure mate
+    - not now buddy
+    _nextDialogueIndexes: 0200000002000000
+    _givesQuest: 
+    _opensShop: 0100
+  _questInProgressIndex: 0
+  _questCompleteIndex: 0
+  quest: {fileID: 0}
