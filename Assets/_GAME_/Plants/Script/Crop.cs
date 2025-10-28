@@ -7,14 +7,14 @@ public class Crop : MonoBehaviour
     int currentHealth;
 
     [Header("Drops")]
-    public GameObject[] dropPrefabs; // các prefab item có thể rơi (ví dụ: wood)
+    public GameObject[] dropPrefabs; 
     public int minDrops = 1;
     public int maxDrops = 3;
-    public float dropForce = 4f; // lực nẩy ra
-    public float dropRadius = 0.5f; // offset spawn nhỏ
+    public float dropForce = 4f; 
+    public float dropRadius = 0.5f;
 
-    [Header("Stump / Visuals")]
-    public GameObject stumpPrefab; // (tùy) spawn gốc cây sau khi chặt
+    //[Header("Stump / Visuals")]
+    //public GameObject stumpPrefab; // (tùy) spawn gốc cây sau khi chặt
 
     void Start()
     {
@@ -36,15 +36,14 @@ public class Crop : MonoBehaviour
         Collider2D col = GetComponent<Collider2D>();
         if (col) col.enabled = false;
 
-        // đợi 0.3s để animation rơi (nếu có)
         yield return new WaitForSeconds(0.25f);
 
         SpawnDrops();
 
-        if (stumpPrefab)
-        {
-            Instantiate(stumpPrefab, transform.position, Quaternion.identity);
-        }
+        //if (stumpPrefab)
+        //{
+        //    Instantiate(stumpPrefab, transform.position, Quaternion.identity);
+        //}
 
         Destroy(gameObject);
     }

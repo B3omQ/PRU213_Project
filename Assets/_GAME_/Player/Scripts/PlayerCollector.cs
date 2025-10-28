@@ -5,22 +5,24 @@ public class PlayerCollector : MonoBehaviour
     private InventoryController _inventoryController;
 
     [Header("Attack Settings")]
-    public Transform attackPoint;     // điểm tấn công (child của Player)
-    public float attackRadius = 0.6f; // bán kính vòng tròn tấn công
-    public int damage = 1;            // sát thương mỗi hit
-    public LayerMask treeLayer;       // chọn layer = "Tree" trong Inspector
+    public Transform attackPoint;
+    public float attackRadius = 0.6f;
+    public int damage = 1;
+    public LayerMask treeLayer;
     public float attackCooldown = 0.5f;
     float lastAttackTime;
 
+    
 
-    [Header("Health System")]
-    public int maxHealth = 10;
-    private int currentHealth;
     void Start()
     {
         _inventoryController = FindAnyObjectByType<InventoryController>();
+
+        // Nếu chưa gán trong Inspector thì tự lấy trên GameObject
+       
     }
-    void Update() 
+
+    void Update()
     {
         if (InputManager.AttackPressed)
         {
@@ -53,13 +55,12 @@ public class PlayerCollector : MonoBehaviour
         Debug.Log("Player attacked!");
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Item"))
         {
             Item item = collision.GetComponent<Item>();
-            if (item != null && item.CanBePickedUp()) // chỉ nhặt khi được phép
+            if (item != null && item.CanBePickedUp())
             {
                 bool itemAdded = _inventoryController.AddItem(collision.gameObject);
                 if (itemAdded)
@@ -70,5 +71,4 @@ public class PlayerCollector : MonoBehaviour
             }
         }
     }
-
 }
