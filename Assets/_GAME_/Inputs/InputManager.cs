@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     public static bool HoePressed { get; private set; }
 
 
+    public static bool InteractPressed { get; private set; }
 
     private PlayerInput _playerInput;
     private InputAction _moveAction;
@@ -17,6 +18,7 @@ public class InputManager : MonoBehaviour
     private InputAction _attack;
     private InputAction _hoe;
 
+    private InputAction _interact;
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class InputManager : MonoBehaviour
         _attack = _playerInput.actions["Attack"];
         _hoe = _playerInput.actions["Hoe"];
 
+        _interact = _playerInput.actions["Interact"];
     }
 
     private void Update()
@@ -34,5 +37,6 @@ public class InputManager : MonoBehaviour
         OpenMenuPressed = _openMenu.triggered;
         AttackPressed = _attack.triggered;
         HoePressed = _hoe.triggered;
+        InteractPressed = _interact.triggered;
     }
 }

@@ -37,6 +37,9 @@
                     "name": "Hoe",
                     "type": "Button",
                     "id": "a61aa4c5-80e7-4316-a5d5-4a757527ac7b",
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "c94c41e4-146d-421d-8e27-74e20de16654",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -184,6 +187,12 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hoe",
+                    "id": "c56a86f6-1a97-430d-aca9-b99f2f55991d",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
