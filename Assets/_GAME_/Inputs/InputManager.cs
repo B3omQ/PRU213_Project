@@ -7,12 +7,16 @@ public class InputManager : MonoBehaviour
     public static Vector2 Movement;
     public static bool OpenMenuPressed { get; private set; }
     public static bool AttackPressed { get; private set; }
+    public static bool HoePressed { get; private set; }
+
 
 
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _openMenu;
     private InputAction _attack;
+    private InputAction _hoe;
+
 
     private void Awake()
     {
@@ -20,6 +24,7 @@ public class InputManager : MonoBehaviour
         _moveAction = _playerInput.actions["Move"];
         _openMenu = _playerInput.actions["OpenUI"];
         _attack = _playerInput.actions["Attack"];
+        _hoe = _playerInput.actions["Hoe"];
 
     }
 
@@ -28,6 +33,6 @@ public class InputManager : MonoBehaviour
         Movement = _moveAction.ReadValue<Vector2>();
         OpenMenuPressed = _openMenu.triggered;
         AttackPressed = _attack.triggered;
-
+        HoePressed = _hoe.triggered;
     }
 }

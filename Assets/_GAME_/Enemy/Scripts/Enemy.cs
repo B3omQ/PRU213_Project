@@ -3,26 +3,42 @@
 public class Enemy : MonoBehaviour
 {
     private Rigidbody2D rigid;
-    public Transform player;   // gán trong Inspector hoặc tự tìm
+    public Transform player;   
     public float speed = 2f;
+    protected float maxHealth = 100f;
+    protected float currentHealth;
 
-    void Start()
+
+    protected virtual void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
+
         if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-        }
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (player == null) return;
+        MoveTowardPlayer();
+    }
 
-        // hướng từ enemy đến player
+    protected virtual void MoveTowardPlayer()
+    {
         Vector2 direction = (player.position - transform.position).normalized;
-
-        // di chuyển enemy về phía player
         rigid.linearVelocity = direction * speed;
+    }
+
+    public virtual void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+            Die();
+    }
+
+    protected virtual void Die()
+    {
+        gameObject.SetActive(false);    
     }
 }

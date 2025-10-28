@@ -44,6 +44,20 @@ public class itemPickupUI : MonoBehaviour
         }
         StartCoroutine(FadeOutAndDestroy(newPopup));
     }
+
+    public void ShowWarning(string log)
+    {
+        GameObject newPopup = Instantiate(_popUpPrefab, transform);
+        newPopup.GetComponentInChildren<TMP_Text>().text = log;
+
+        _activePopUps.Enqueue(newPopup);
+
+        if (_activePopUps.Count > _maxPopUp)
+        {
+            Destroy(_activePopUps.Dequeue());
+        }
+        StartCoroutine(FadeOutAndDestroy(newPopup));
+    }
     private IEnumerator FadeOutAndDestroy(GameObject popUp) 
     {
         yield return new WaitForSeconds(_popUpDuration);

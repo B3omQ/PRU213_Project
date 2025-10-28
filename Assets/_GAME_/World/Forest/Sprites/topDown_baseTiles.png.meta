@@ -13608,6 +13608,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: topDown_baseTiles_41
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 734
+        width: 3
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ce6e5e04e5fc80428a4fe5bbfff4bbd
+      internalID: 1382113051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -13976,6 +13998,7 @@ TextureImporter:
       topDown_baseTiles_407: 1622390206
       topDown_baseTiles_408: -426212965
       topDown_baseTiles_409: 829016275
+      topDown_baseTiles_41: 1382113051
       topDown_baseTiles_410: -657870647
       topDown_baseTiles_411: 1485552413
       topDown_baseTiles_412: -1845640869
