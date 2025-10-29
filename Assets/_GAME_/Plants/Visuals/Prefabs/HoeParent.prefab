@@ -60,9 +60,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   hoeRange: 0
-  player: {fileID: 0}
   poolSize: 5
-  soilLifetime: 3
+  soilLifetime: 100
+  player: {fileID: 0}
   animator: {fileID: 754846293259244027}
 --- !u!114 &408322885939428946
 MonoBehaviour:
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75c90a9dd1f0a5c49abcb843750939d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._GAME_.Plants.Script.HoeItem
-  id: 3
+  id: 4
   Name: Hoe
   quantity: 1
 --- !u!1 &4790531312224802584

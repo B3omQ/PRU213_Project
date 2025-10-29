@@ -10,15 +10,29 @@ public class HoeTool : MonoBehaviour
     public GameObject tilledSoilPrefab;
     public LayerMask groundLayer;
     public float hoeRange = 1f;
-    public Transform player;
     public int poolSize = 5;
     public float soilLifetime = 3f;
-
+    public Transform player;
     [Header("Animation")]
     public Animator animator;
 
     private List<GameObject> soilPool = new List<GameObject>();
     itemPickupUI itemPickupUI;
+
+    private void Awake()
+    {
+        Debug.Log("HoeTool Awake");
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+            Debug.Log("✅ Player found in Awake: " + player.name);
+        }
+        else
+        {
+            Debug.LogWarning("❌ Player not found in Awake");
+        }
+    }
     private void Start()
     {
         for (int i = 0; i < poolSize; i++)
@@ -26,20 +40,30 @@ public class HoeTool : MonoBehaviour
             GameObject soil = Instantiate(tilledSoilPrefab);
             soil.SetActive(false);
             soil.tag = "TilledSoil";
+
             SpriteRenderer sr = soil.GetComponent<SpriteRenderer>();
             if (sr != null)
                 sr.sortingOrder = -1;
+
             soilPool.Add(soil);
         }
 
+        // Tìm lại player nếu chưa có
         if (player == null)
         {
             GameObject p = GameObject.FindGameObjectWithTag("Player");
             if (p != null)
                 player = p.transform;
         }
-        itemPickupUI = new itemPickupUI();
+
+        // ❌ KHÔNG dùng new itemPickupUI();
+        // ✅ Thay bằng:
+        itemPickupUI = itemPickupUI.Instance;
+
+        if (itemPickupUI == null)
+            Debug.LogWarning("⚠️ HoeTool: itemPickupUI.Instance chưa được khởi tạo trong Scene!");
     }
+
 
     public void UseHoe()
     {

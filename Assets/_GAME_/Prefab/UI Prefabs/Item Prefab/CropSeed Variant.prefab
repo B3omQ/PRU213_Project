@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4687634492492712564
+--- !u!1001 &5874973402032224336
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,25 +8,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -8804204674992163344, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -294615636, guid: 7065e050097ff2b4487f0daf6123d146, type: 3}
     - target: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_Name
-      value: Coin Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 587305482285197096, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 352848558067733285, guid: 7065e050097ff2b4487f0daf6123d146, type: 3}
-    - target: {fileID: 2021369016224955755, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
-      propertyPath: id
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2021369016224955755, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
-      propertyPath: Name
-      value: Coin
+      value: CropSeed Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_Pivot.x
@@ -90,11 +74,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1136.225
+      value: -2.10088
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 360.9113
+      value: 3.20603
       objectReference: {fileID: 0}
     - target: {fileID: 3125266730445819587, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -109,31 +93,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 8740935167221398787, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+    - {fileID: 5526489332517583523, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7381580482341794907}
+      addedObject: {fileID: 4786910425637377420}
   m_SourcePrefab: {fileID: 100100000, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
---- !u!1 &4732992746525191181 stripped
+--- !u!1 &5848834791616044585 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
-  m_PrefabInstance: {fileID: 4687634492492712564}
+  m_PrefabInstance: {fileID: 5874973402032224336}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7381580482341794907
+--- !u!114 &4786910425637377420
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4732992746525191181}
+  m_GameObject: {fileID: 5848834791616044585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277c1c5029be5c64b854dbc4b28923fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 558d77e332a02a04a879099382cc93d4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Item
-  id: 3
-  Name: Coin
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._GAME_.Plants.Script.SeedItem
+  id: 1
+  Name: CropSeed
   quantity: 1
+  cropPrefab: {fileID: 51402876813453131, guid: af8fe9770aaaf5847b8854b72d47003a, type: 3}
+  tilledSoilLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  checkRadius: 0.2
+  plantRange: 1

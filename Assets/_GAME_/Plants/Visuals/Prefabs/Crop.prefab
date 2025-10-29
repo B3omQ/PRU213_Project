@@ -142,9 +142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Crop
   maxHealth: 1
   dropPrefabs:
-  - {fileID: 45921582237345401, guid: e2847f7d22fcb494298e26b8424c4c26, type: 3}
+  - {fileID: 5848834791616044585, guid: 8b0875f2b6a8db94b94fbfb0a920f7e1, type: 3}
   minDrops: 1
   maxDrops: 3
   dropForce: 4
   dropRadius: 0.5
-  stumpPrefab: {fileID: 5756214273118255495, guid: ee0fb3a824fdd7f4cbd04b9e28ea235c, type: 3}

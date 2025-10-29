@@ -10,6 +10,7 @@ namespace Assets._GAME_.Plants.Script
 {
     public class HoeItem : Item
     {
+
         private HoeTool hoeTool;
 
         private void Awake()
@@ -17,7 +18,7 @@ namespace Assets._GAME_.Plants.Script
             hoeTool = GetComponent<HoeTool>();
         }
 
-        public override void UseItem()
+        public override void UseItem(Transform player)
         {
             if (hoeTool == null)
             {

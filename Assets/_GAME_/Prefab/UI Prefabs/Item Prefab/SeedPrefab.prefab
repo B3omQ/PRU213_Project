@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 587305482285197096}
   - component: {fileID: 2303884787515799816}
   - component: {fileID: 5182928590758518565}
-  - component: {fileID: 2021369016224955755}
   - component: {fileID: -8804204674992163344}
   - component: {fileID: -5298711885473605793}
   - component: {fileID: 189581318251478550}
+  - component: {fileID: 5526489332517583523}
   m_Layer: 5
-  m_Name: CropSeed
+  m_Name: SeedPrefab
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,21 +108,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dragitem
   _minDropdis: 2
   _maxDropdis: 2
---- !u!114 &2021369016224955755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45921582237345401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277c1c5029be5c64b854dbc4b28923fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Item
-  id: 1
-  Name: CropSeed
-  quantity: 1
 --- !u!212 &-8804204674992163344
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -232,6 +217,21 @@ MonoBehaviour:
   _bounceHeight: 0.3
   _bounceDuration: 0.4
   _bounceCount: 1
+--- !u!114 &5526489332517583523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45921582237345401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277c1c5029be5c64b854dbc4b28923fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  id: 1
+  Name: CropSeed
+  quantity: 1
 --- !u!1 &6048055944625321805
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class HotBarController : MonoBehaviour
 
     private ItemDictionary _itemDictionary;
     private Key[] _hotbarKey;
+    public Transform Player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -47,7 +48,7 @@ public class HotBarController : MonoBehaviour
         if (slot._currentItem != null)
         {
             Item item = slot._currentItem.GetComponent<Item>();
-            item.UseItem();
+            item.UseItem(Player);
         }
     }
 
