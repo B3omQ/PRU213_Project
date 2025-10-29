@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 [SelectionBase]
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,6 +13,13 @@ public class PlayerMovement : MonoBehaviour
     private const string _vertical = "Vertical";
     private const string _lastHorizontal = "LastHorizontal";
     private const string _lastVertical = "LastVertical";
+
+
+    [Header("Aim Settings")]
+    public Transform _Aim;
+    [SerializeField] private float _aimOffset = 0.6f;
+    bool _isMoving = false;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -31,6 +38,26 @@ public class PlayerMovement : MonoBehaviour
         {
             _animator.SetFloat(_lastHorizontal, _movement.x);
             _animator.SetFloat(_lastVertical, _movement.y);
+            _isMoving = true;
+        }
+        else
+        {
+            _isMoving = false;
+        }
+
+        UpdateAimPosition();
+    }
+
+    private void UpdateAimPosition()
+    {
+        if (_movement != Vector2.zero)
+        {
+            // Xoay Aim theo hướng di chuyển
+            _Aim.rotation = Quaternion.LookRotation(Vector3.forward, _movement);
+
+            // Di chuyển Aim ra trước Player trong local space
+            Vector3 aimLocalOffset = new Vector3(_movement.x, _movement.y, 0).normalized * _aimOffset;
+            _Aim.localPosition = aimLocalOffset;
         }
     }
 }

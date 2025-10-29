@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -171,6 +171,7 @@ public class NPCController : MonoBehaviour, IInteractable
         int choiceCount = choice._choices.Length;
         int nextCount = choice._nextDialogueIndexes.Length;
         int questCount = choice._givesQuest.Length;
+        int shopCount = choice._opensShop != null ? choice._opensShop.Length : 0;
 
         for (int i = 0; i < choiceCount; i++)
         {
@@ -178,19 +179,26 @@ public class NPCController : MonoBehaviour, IInteractable
 
             int nextIndex = (i < nextCount) ? choice._nextDialogueIndexes[i] : -1;
             bool giveQuest = (i < questCount) && choice._givesQuest[i];
+            bool openShop = (i < shopCount) && choice._opensShop[i];
 
-            _dialogueManager.CreateChoicebutton(text, () => ChoiceOption(nextIndex, giveQuest));
+            _dialogueManager.CreateChoicebutton(text, () => ChoiceOption(nextIndex, giveQuest, openShop));
         }
 
         Canvas.ForceUpdateCanvases();
     }
 
-    private void ChoiceOption(int nextIndex, bool giveQuest)
+    private void ChoiceOption(int nextIndex, bool giveQuest, bool openShop)
     {
         if (giveQuest)
         {
             QuestController.Instance.AcceptQuest(_dialogueData.quest);
             _questState = QuestState.InProgress;
+        }
+        if (openShop)
+        {
+            DialogueManager.Instance.HideDialogue();
+            ShopController.Instance.OpenShop();
+            return;
         }
         _dialogueIndex = nextIndex;
         _dialogueManager.ClearChoices();

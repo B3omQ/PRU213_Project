@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName ="NewNPCDialogue", menuName ="NPC Dialogue")]
 public class NPCDialog : ScriptableObject
@@ -28,4 +28,7 @@ public class DialogueChoice
     public string[] _choices;
     public int[] _nextDialogueIndexes;
     public bool[] _givesQuest;
+
+    [Header("Optional Actions")]
+    public bool[] _opensShop; // ✅ Đánh dấu lựa chọn nào mở shop
 }
