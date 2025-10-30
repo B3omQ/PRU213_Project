@@ -173,24 +173,49 @@ public class InventoryController : MonoBehaviour
 
     public void RemoveItemsFromInventory(int itemId, int amountToRemove)
     {
-        foreach (Transform slotTranform in _inventoryPanel.transform)
+        if (_inventoryPanel == null)
         {
-            if(amountToRemove <= 0) break;
+            Debug.LogWarning("⚠️ Inventory panel is not assigned!");
+            return;
+        }
 
-            Slot slot = slotTranform.GetComponent<Slot>();
-            if(slot?._currentItem?.GetComponent<Item>() is Item item && item.id == itemId)
+        foreach (Transform slotTransform in _inventoryPanel.transform)
+        {
+            if (amountToRemove <= 0)
+                break;
+
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot == null)
+                continue;
+
+            // Bỏ qua slot trống hoặc item null
+            if (slot._currentItem == null)
+                continue;
+
+            Item item = slot._currentItem.GetComponent<Item>();
+            if (item == null)
+                continue;
+
+            if (item.id == itemId)
             {
                 int removed = Mathf.Min(amountToRemove, item.quantity);
                 item.RemoveFromStack(removed);
                 amountToRemove -= removed;
 
-                if (item.quantity == 0)
+                // Khi item hết => xóa object khỏi inventory
+                if (item.quantity <= 0)
                 {
                     Destroy(slot._currentItem);
                     slot._currentItem = null;
                 }
             }
         }
+
+        if (amountToRemove > 0)
+        {
+            Debug.LogWarning($"⚠️ Not enough items with ID {itemId} to remove. Remaining: {amountToRemove}");
+        }
     }
+
 
 }

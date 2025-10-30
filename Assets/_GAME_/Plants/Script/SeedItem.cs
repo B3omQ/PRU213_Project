@@ -62,7 +62,7 @@ namespace Assets._GAME_.Plants.Script
 
             // Tránh trồng chồng lên nhau
             Collider2D overlap = Physics2D.OverlapCircle(plantWorldPos, 0.1f);
-            if (overlap != null && overlap.CompareTag("Crop"))
+            if (overlap != null && overlap.CompareTag("Planted"))
             {
                 itemPickupUI.Instance?.ShowWarning("⚠️ A crop is already planted here!");
                 return;
@@ -72,10 +72,18 @@ namespace Assets._GAME_.Plants.Script
             if (cropPrefab != null)
             {
                 GameObject crop = Instantiate(cropPrefab, plantWorldPos, Quaternion.identity);
-                crop.tag = "Crop";
+                crop.tag = "Planted";
 
                 RemoveFromStack(1);
                 Debug.Log($"🌱 Planted crop at tile {cellPos}");
+
+                if (quantity <= 0)
+                {
+                    Debug.Log($"🧺 Removing seed {id} from inventory");
+                    InventoryController._instance.RemoveItemsFromInventory(id, 1);
+                    // hoặc nếu bạn có tham chiếu slot, có thể tự hủy gameObject:
+                    Destroy(gameObject);
+                }
             }
             else
             {

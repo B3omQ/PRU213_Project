@@ -54,12 +54,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f8e00b40f7ecb489425112073abbf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoeTool
-  id: 5
+  id: 4
   Name: Hoe
   quantity: 1
-  groundTilemap: {fileID: 0}
-  tilledTilemap: {fileID: 0}
-  tilledTile: {fileID: 0}
   hoeRange: 0
   animator: {fileID: 754846293259244027}
 --- !u!114 &408322885939428946

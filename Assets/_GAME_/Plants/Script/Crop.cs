@@ -45,7 +45,14 @@ public class Crop : MonoBehaviour
         //    Instantiate(stumpPrefab, transform.position, Quaternion.identity);
         //}
 
-        Destroy(gameObject);
+        if (transform.parent != null)
+        {
+            Destroy(transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void SpawnDrops()

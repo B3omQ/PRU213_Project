@@ -153,6 +153,9 @@ public class Dragitem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         Destroy(gameObject);
 
         InventoryController._instance.RebuidItemCounts();
+
+        Item itemComponent = GetComponent<Item>();
+        itemComponent?.OnDropOutsideInventory();
     }
 
 
