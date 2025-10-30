@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class Item : MonoBehaviour
@@ -64,7 +65,7 @@ public class Item : MonoBehaviour
         }
     }
 
-    public virtual void UseItem(Transform player)
+    public virtual void UseItem(Transform player, Tilemap tilledTilemap, TileBase tilledTile, Tilemap groundTilemap)
     {
        
     }

@@ -3005,7 +3005,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: topDown_baseTiles_130
+      name: TilledTile
       rect:
         serializedVersion: 2
         x: 16
@@ -13617,7 +13617,7 @@ TextureImporter:
         width: 3
         height: 58
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -13652,6 +13652,7 @@ TextureImporter:
       Grass_4: -1877294535
       Grass_5: -1423130727
       Grass_Base: 567954377
+      TilledTile: -360202614
       island_Bottom: -1581668039
       island_BottomLeft: 290672528
       island_BottomRight: 2090447509
@@ -13700,7 +13701,6 @@ TextureImporter:
       topDown_baseTiles_128: -986123689
       topDown_baseTiles_129: -2128523695
       topDown_baseTiles_13: 7987169688330639323
-      topDown_baseTiles_130: -360202614
       topDown_baseTiles_131: -1854175523
       topDown_baseTiles_132: -1808149759
       topDown_baseTiles_133: 1281149599

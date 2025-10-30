@@ -49,6 +49,9 @@ TagManager:
   - name: Ground
     uniqueID: 3871338723
     locked: 0
+  - name: Tilled
+    uniqueID: 3959687245
+    locked: 0
   - name: Vegetation
     uniqueID: 1815101599
     locked: 0

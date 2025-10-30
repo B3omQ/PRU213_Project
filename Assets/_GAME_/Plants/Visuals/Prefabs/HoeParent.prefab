@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -8196801702382988239}
   - component: {fileID: -8450106174589626225}
   - component: {fileID: 7595425095617056459}
-  - component: {fileID: -5123908272772285603}
   m_Layer: 5
   m_Name: HoeParent
   m_TagString: Item
@@ -55,14 +54,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f8e00b40f7ecb489425112073abbf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoeTool
-  tilledSoilPrefab: {fileID: 3917104991972521257, guid: 494d80d294034314295f4a485a25e21d, type: 3}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
+  id: 5
+  Name: Hoe
+  quantity: 1
+  groundTilemap: {fileID: 0}
+  tilledTilemap: {fileID: 0}
+  tilledTile: {fileID: 0}
   hoeRange: 0
-  poolSize: 5
-  soilLifetime: 100
-  player: {fileID: 0}
   animator: {fileID: 754846293259244027}
 --- !u!114 &408322885939428946
 MonoBehaviour:
@@ -164,21 +162,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &-5123908272772285603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609119009107225174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75c90a9dd1f0a5c49abcb843750939d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets._GAME_.Plants.Script.HoeItem
-  id: 4
-  Name: Hoe
-  quantity: 1
 --- !u!1 &4790531312224802584
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +240,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -155345377
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 5164844386883845718, guid: 355b5abbb68e72c4cb8f9726f979c036, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

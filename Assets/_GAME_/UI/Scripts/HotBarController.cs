@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class HotBarController : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class HotBarController : MonoBehaviour
     private ItemDictionary _itemDictionary;
     private Key[] _hotbarKey;
     public Transform Player;
+    public Tilemap tilledTilemap;
+    public TileBase tilledTile;
+    public Tilemap groundTilemap;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -48,7 +52,7 @@ public class HotBarController : MonoBehaviour
         if (slot._currentItem != null)
         {
             Item item = slot._currentItem.GetComponent<Item>();
-            item.UseItem(Player);
+            item.UseItem(Player, tilledTilemap, tilledTile, groundTilemap);
         }
     }
 

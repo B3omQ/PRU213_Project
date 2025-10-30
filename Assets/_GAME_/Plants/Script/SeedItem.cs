@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Assets._GAME_.Plants.Script
 {
@@ -8,40 +9,73 @@ namespace Assets._GAME_.Plants.Script
     {
         [Header("Seed Settings")]
         [SerializeField] private GameObject cropPrefab;
-        [SerializeField] private LayerMask tilledSoilLayer;
-        [SerializeField] private float checkRadius = 0.2f;
         [SerializeField] private float plantRange = 1f;
 
         private Transform player; // runtime player reference
+        private Tilemap tilledTilemap;
+        private TileBase tilledTile;
 
-
-        public override void UseItem(Transform playerTransform)
+        /// <summary>
+        /// Gọi khi người chơi dùng hạt giống từ hotbar hoặc inventory.
+        /// </summary>
+        public override void UseItem(Transform playerTransform, Tilemap tilemap, TileBase tile, Tilemap groundTilemap)
         {
-            // Ưu tiên player được truyền vào, nếu null thì dùng player trong scene
-            if (playerTransform != null)
-                player = playerTransform;
+            Debug.Log("Seed working");
+            // Gán reference runtime
+            player = playerTransform;
+            tilledTilemap = tilemap;
+            tilledTile = tile;
 
             if (player == null)
             {
-                Debug.LogWarning("❌ Không tìm thấy Player để trồng hạt.");
+                Debug.LogWarning("❌ SeedItem: Không tìm thấy Player để trồng hạt.");
                 return;
             }
 
-            Debug.Log("Use item on SeedItem");
-
-            Vector3 plantPosition = player.position + player.right * plantRange;
-
-            Collider2D hit = Physics2D.OverlapCircle(plantPosition, checkRadius, tilledSoilLayer);
-            if (hit == null || !hit.CompareTag("TilledSoil"))
+            if (tilledTilemap == null)
             {
-                itemPickupUI.Instance?.ShowWarning("Cannot plant here");
+                Debug.LogWarning("⚠️ SeedItem: Chưa truyền Tilemap đất đã cuốc vào UseItem().");
                 return;
             }
 
+            // Xác định vị trí tile phía trước player
+            Vector3 targetPos = player.position + player.right * plantRange;
+            Vector3Int cellPos = tilledTilemap.WorldToCell(targetPos);
+
+            // Kiểm tra tile tại vị trí đó
+            TileBase currentTile = tilledTilemap.GetTile(cellPos);
+            if (currentTile == null)
+            {
+                itemPickupUI.Instance?.ShowWarning("❌ Cannot plant here (no tilled soil)");
+                return;
+            }
+
+            // Kiểm tra đúng loại tile (nếu có chỉ định)
+            if (tilledTile != null && currentTile != tilledTile)
+            {
+                itemPickupUI.Instance?.ShowWarning("❌ Cannot plant here (not tilled tile)");
+                return;
+            }
+
+            // Xác định vị trí world chính giữa cell
+            Vector3 plantWorldPos = tilledTilemap.GetCellCenterWorld(cellPos);
+
+            // Tránh trồng chồng lên nhau
+            Collider2D overlap = Physics2D.OverlapCircle(plantWorldPos, 0.1f);
+            if (overlap != null && overlap.CompareTag("Crop"))
+            {
+                itemPickupUI.Instance?.ShowWarning("⚠️ A crop is already planted here!");
+                return;
+            }
+
+            // Tiến hành trồng cây
             if (cropPrefab != null)
             {
-                Instantiate(cropPrefab, hit.transform.position, Quaternion.identity);
+                GameObject crop = Instantiate(cropPrefab, plantWorldPos, Quaternion.identity);
+                crop.tag = "Crop";
+
                 RemoveFromStack(1);
+                Debug.Log($"🌱 Planted crop at tile {cellPos}");
             }
             else
             {
@@ -53,8 +87,8 @@ namespace Assets._GAME_.Plants.Script
         {
             if (player == null) return;
             Gizmos.color = Color.green;
-            Vector3 plantPosition = player.position + player.right * plantRange;
-            Gizmos.DrawWireSphere(plantPosition, checkRadius);
+            Vector3 targetPos = player.position + player.right * plantRange;
+            Gizmos.DrawWireSphere(targetPos, 0.1f);
         }
     }
 }
