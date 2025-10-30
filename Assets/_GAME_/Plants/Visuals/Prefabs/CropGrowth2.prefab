@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1556179402146519648}
   m_Layer: 0
   m_Name: CropGrowth2
-  m_TagString: Untagged
+  m_TagString: Planted
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -155345377
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 6812107102740459891, guid: d9f92f15219ef274babc99d11856c65d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

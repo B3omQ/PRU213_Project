@@ -70,6 +70,11 @@ public class Item : MonoBehaviour
        
     }
 
+    public virtual void OnDropOutsideInventory()
+    {
+       
+    }
+
     public virtual void OnEnable()
     {
         StartCoroutine(EnablePickupAfterDelay(2f));
