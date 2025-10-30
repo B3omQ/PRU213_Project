@@ -20599,6 +20599,7 @@ MonoBehaviour:
   Player: {fileID: 1541140799}
   tilledTilemap: {fileID: 314080341}
   tilledTile: {fileID: 11400000, guid: 672bd5fd236758b459f949d4d8740a0f, type: 2}
+  groundTilemap: {fileID: 212138425}
 --- !u!114 &288079079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26565,7 +26566,7 @@ MonoBehaviour:
   - {fileID: 4786910425637377420, guid: 8b0875f2b6a8db94b94fbfb0a920f7e1, type: 3}
   - {fileID: 8837035739482511410, guid: 913806cf616ff554f92d35b1885b94bb, type: 3}
   - {fileID: 990750653961187543, guid: 25997b8087bcebe4890741dbea09285e, type: 3}
-  - {fileID: -5123908272772285603, guid: 6e04961ffee3fa64ab50229745e6e807, type: 3}
+  - {fileID: 0}
 --- !u!1 &1854552339
 GameObject:
   m_ObjectHideFlags: 0
