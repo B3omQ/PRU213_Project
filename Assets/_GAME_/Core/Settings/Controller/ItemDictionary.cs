@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -34,4 +34,20 @@ public class ItemDictionary : MonoBehaviour
         }
         return prefab;
     }
+
+    public string GetItemName(int itemId)
+    {
+        if (_itemDictionary.TryGetValue(itemId, out GameObject prefab))
+        {
+            Item item = prefab.GetComponent<Item>();
+            if (item != null)
+            {
+                return item.Name;
+            }
+        }
+
+        Debug.LogWarning($"⚠️ Item name for id {itemId} not found.");
+        return "Unknown Item";
+    }
+
 }

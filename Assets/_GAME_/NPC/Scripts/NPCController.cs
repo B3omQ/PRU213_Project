@@ -172,7 +172,7 @@ public class NPCController : MonoBehaviour, IInteractable
         int nextCount = choice._nextDialogueIndexes.Length;
         int questCount = choice._givesQuest.Length;
         int shopCount = choice._opensShop != null ? choice._opensShop.Length : 0;
-
+        int buildingShopCount = choice._opensBuildingShop != null ? choice._opensBuildingShop.Length : 0;
         for (int i = 0; i < choiceCount; i++)
         {
             string text = choice._choices[i];
@@ -180,14 +180,15 @@ public class NPCController : MonoBehaviour, IInteractable
             int nextIndex = (i < nextCount) ? choice._nextDialogueIndexes[i] : -1;
             bool giveQuest = (i < questCount) && choice._givesQuest[i];
             bool openShop = (i < shopCount) && choice._opensShop[i];
+            bool openBuildingShop = (i < buildingShopCount) && choice._opensBuildingShop[i];
 
-            _dialogueManager.CreateChoicebutton(text, () => ChoiceOption(nextIndex, giveQuest, openShop));
+            _dialogueManager.CreateChoicebutton(text, () => ChoiceOption(nextIndex, giveQuest, openShop, openBuildingShop));
         }
 
         Canvas.ForceUpdateCanvases();
     }
 
-    private void ChoiceOption(int nextIndex, bool giveQuest, bool openShop)
+    private void ChoiceOption(int nextIndex, bool giveQuest, bool openShop, bool openBuildingShop)
     {
         if (giveQuest)
         {
@@ -200,6 +201,13 @@ public class NPCController : MonoBehaviour, IInteractable
             ShopController.Instance.OpenShop();
             return;
         }
+        if (openBuildingShop)
+        {
+            DialogueManager.Instance.HideDialogue();
+            BuildingManager.Instance.OpenBuildingPanel();
+            return;
+        }
+
         _dialogueIndex = nextIndex;
         _dialogueManager.ClearChoices();
         ShowCurrentLine();
