@@ -10,7 +10,8 @@ public class Weapon : MonoBehaviour
         Enemy enemy = collision.GetComponent<Enemy>();
         if(enemy != null)
         {
-            //goi ham gay dame
+            enemy.TakeDamage(_damage);
+            Debug.Log($"⚔️ Gây {_damage} sát thương cho {enemy.name}");
         }
     }
 

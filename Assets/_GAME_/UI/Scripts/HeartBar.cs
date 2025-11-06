@@ -19,12 +19,14 @@ public class HeartBar : MonoBehaviour
     {
         PlayerHealth._OnplayerDamaged += DrawHearts;
         PlayerHealth._OnplayerDeath += DrawHearts;
+        PlayerHealth._OnplayerHealed += DrawHearts;
     }
 
     private void OnDisable()
     {
         PlayerHealth._OnplayerDamaged -= DrawHearts;
         PlayerHealth._OnplayerDeath -= DrawHearts;
+        PlayerHealth._OnplayerHealed -= DrawHearts;
     }
     private void Start()
     {
@@ -35,8 +37,10 @@ public class HeartBar : MonoBehaviour
     public void DrawHearts()
     {
         ClearHearts();
-        float maxHealthRemainder = _playerHealth._maxHealth % 2;
-        int heartsToMake = (int)((_playerHealth._maxHealth / 2) + maxHealthRemainder);
+
+        // 🧮 Mỗi tim = 4 máu
+        int heartsToMake = Mathf.CeilToInt(_playerHealth._maxHealth / 4f);
+
         for (int i = 0; i < heartsToMake; i++)
         {
             CreateEmptyHeart();
@@ -44,14 +48,20 @@ public class HeartBar : MonoBehaviour
 
         for (int i = 0; i < _hearts.Count; i++)
         {
-            int heartStatusRemainder = (int)Mathf.Clamp(_playerHealth._health - (i * 2), 0, 4);
+            // Tính số máu còn lại trong mỗi tim (mỗi tim = 4 máu)
+            int heartStatusRemainder = (int)Mathf.Clamp(_playerHealth._health - (i * 4), 0, 4);
             _hearts[i].SetHeartImage((HeartStatus)heartStatusRemainder);
         }
     }
     public void CreateEmptyHeart()
     {
-        GameObject newHeart = Instantiate(_heartPrefab);
-        newHeart.transform.SetParent(transform);
+        GameObject newHeart = Instantiate(_heartPrefab, transform);
+
+        // 🔧 Reset vị trí và tỉ lệ UI để không bị phóng to / lệch
+        RectTransform rect = newHeart.GetComponent<RectTransform>();
+        rect.localScale = Vector3.one;
+        rect.anchoredPosition3D = Vector3.zero;
+        rect.localRotation = Quaternion.identity;
 
         Heart heartComponent = newHeart.GetComponent<Heart>();
         heartComponent.SetHeartImage(HeartStatus.Empty);
@@ -69,18 +79,19 @@ public class HeartBar : MonoBehaviour
 
     private void CreateHearts()
     {
-        // Xóa tim cũ nếu có
+
         foreach (Transform child in transform)
             Destroy(child.gameObject);
         _hearts.Clear();
 
-        // Mỗi tim chứa 4 đơn vị máu (vì enum HeartStatus có 0-4)
         int heartsToMake = Mathf.CeilToInt(_playerHealth._maxHealth / 4f);
 
         for (int i = 0; i < heartsToMake; i++)
         {
             GameObject newHeart = Instantiate(_heartPrefab, transform);
-            newHeart.transform.SetParent(transform, false);
+            newHeart.transform.SetParent(transform, false); // giữ layout chuẩn
+            RectTransform rect = newHeart.GetComponent<RectTransform>();
+            rect.localScale = Vector3.one;
 
             Heart heartComponent = newHeart.GetComponent<Heart>();
             if (heartComponent == null)

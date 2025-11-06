@@ -30,5 +30,6 @@ public class DialogueChoice
     public bool[] _givesQuest;
 
     [Header("Optional Actions")]
-    public bool[] _opensShop; // ✅ Đánh dấu lựa chọn nào mở shop
-}
+    public bool[] _opensShop;
+    public bool[] _opensBuildingShop;
+}   

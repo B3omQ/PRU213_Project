@@ -23,7 +23,7 @@ public class SwordItem : Item
     {
         if (player == null)
         {
-            Debug.LogWarning("⚠️ SwordItem: Player chưa được gán!");
+            Debug.LogWarning("SwordItem: Player chưa được gán!");
             return;
         }
 
@@ -35,7 +35,7 @@ public class SwordItem : Item
                 swordObject = swordTransform.gameObject;
             else
             {
-                Debug.LogWarning("⚠️ SwordItem: Không tìm thấy object 'Sword' trong Player!");
+                Debug.LogWarning("SwordItem: Không tìm thấy object 'Sword' trong Player!");
                 return;
             }
         }
@@ -43,10 +43,9 @@ public class SwordItem : Item
         // Toggle bật/tắt kiếm
         bool newState = !swordObject.activeSelf;
         swordObject.SetActive(newState);
-        Debug.Log(newState ? "🗡️ Kiếm bật lên!" : "🗡️ Kiếm tắt đi!");
+        Debug.Log(newState ? "Kiếm bật lên!" : "Kiếm tắt đi!");
     }
 
-    // ✅ Kiểm tra xem item kiếm này có đang trong hotbar không
     public override void OnDropOutsideInventory()
     {
         if (swordObject != null)

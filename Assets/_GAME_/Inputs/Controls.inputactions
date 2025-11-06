@@ -50,6 +50,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PlaceBuilding",
+                    "type": "Button",
+                    "id": "375bec0b-d018-4ac6-9aac-f405f6a48eb0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Mouse Pos",
+                    "type": "Value",
+                    "id": "9dea88df-c43b-40e1-b501-f8f03bdb40b9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Exit",
+                    "type": "Button",
+                    "id": "7476c024-0c47-4c24-ae54-2107f66a3bcb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -215,6 +242,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "295bf885-cd33-40e4-bf8b-9bdafb6d899a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d4620bd4-33ed-49ba-bd63-6f38fce905ea",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse Pos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67fa0f69-c145-4ae2-a84c-8c2b5faa254f",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

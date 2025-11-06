@@ -8,18 +8,20 @@ public class InputManager : MonoBehaviour
     public static bool OpenMenuPressed { get; private set; }
     public static bool AttackPressed { get; private set; }
     public static bool HoePressed { get; private set; }
-
-
     public static bool InteractPressed { get; private set; }
+    public static bool PlaceBuildingPressed { get; private set; }
+    public static bool ExitPressed { get; private set; }
+    public static Vector2 MousePosition { get; private set; }
 
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _openMenu;
     private InputAction _attack;
     private InputAction _hoe;
-
     private InputAction _interact;
-
+    private InputAction _placeBuilding;
+    private InputAction _mousePos;
+    private InputAction _exit;
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -27,8 +29,10 @@ public class InputManager : MonoBehaviour
         _openMenu = _playerInput.actions["OpenUI"];
         _attack = _playerInput.actions["Attack"];
         _hoe = _playerInput.actions["Hoe"];
-
         _interact = _playerInput.actions["Interact"];
+        _placeBuilding = _playerInput.actions["PlaceBuilding"];
+        _mousePos = _playerInput.actions["Mouse Pos"];
+        _exit = _playerInput.actions["Exit"];
     }
 
     private void Update()
@@ -38,5 +42,8 @@ public class InputManager : MonoBehaviour
         AttackPressed = _attack.triggered;
         HoePressed = _hoe.triggered;
         InteractPressed = _interact.triggered;
+        PlaceBuildingPressed = _placeBuilding.triggered;
+        ExitPressed = _exit.triggered;
+        MousePosition = _mousePos.ReadValue<Vector2>();
     }
 }

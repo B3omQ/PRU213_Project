@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public float speed = 2f;
     protected float maxHealth = 100f;
     protected float currentHealth;
+    public int expAmount = 100;
 
 
     protected virtual void Start()
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
-        gameObject.SetActive(false);    
+        gameObject.SetActive(false);
+        ExpController.instance.AddExp(expAmount);
     }
 }

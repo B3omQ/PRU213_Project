@@ -45,4 +45,13 @@ public class ShopItemUI : MonoBehaviour
         if (itemAmountText != null)
             itemAmountText.text = $"In Stock: {newStock}";
     }
+
+    public void SetButtonText(string text)
+    {
+        TMP_Text buttonText = buyButton.GetComponentInChildren<TMP_Text>();
+        if (buttonText != null)
+        {
+            buttonText.text = text;
+        }
+    }
 }
