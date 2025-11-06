@@ -75,11 +75,11 @@ namespace Assets._GAME_.Plants.Script
                 crop.tag = "Planted";
 
                 RemoveFromStack(1);
-                Debug.Log($"🌱 Planted crop at tile {cellPos}");
+                Debug.Log($"Planted crop at tile {cellPos}");
 
                 if (quantity <= 0)
                 {
-                    Debug.Log($"🧺 Removing seed {id} from inventory");
+                    Debug.Log($"Removing seed {id} from inventory");
                     InventoryController._instance.RemoveItemsFromInventory(id, 1);
                     // hoặc nếu bạn có tham chiếu slot, có thể tự hủy gameObject:
                     Destroy(gameObject);
@@ -87,7 +87,7 @@ namespace Assets._GAME_.Plants.Script
             }
             else
             {
-                Debug.LogWarning($"⚠️ Crop prefab chưa được gán cho {Name}");
+                Debug.LogWarning($"Crop prefab chưa được gán cho {Name}");
             }
         }
 

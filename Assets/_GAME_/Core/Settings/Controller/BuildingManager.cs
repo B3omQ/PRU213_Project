@@ -108,6 +108,7 @@ public class BuildingManager : MonoBehaviour
     {
         _isOpen = true;
         buildingPanel.SetActive(true);
+        PauseController.SetPause(true);
         Debug.Log("[BuildingController] Opened!");
     }
 
@@ -115,6 +116,7 @@ public class BuildingManager : MonoBehaviour
     {
         _isOpen = false;
         buildingPanel.SetActive(false);
+        PauseController.SetPause(false);
         Debug.Log("[BuildingController] Closed!");
     }
 

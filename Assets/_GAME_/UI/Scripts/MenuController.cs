@@ -14,7 +14,12 @@ public class MenuController : MonoBehaviour
     {
         if (InputManager.OpenMenuPressed)
         {
+            if (!_Menu.activeSelf && PauseController._isGamePaused)
+            {
+                return;
+            }
             _Menu.SetActive(!_Menu.activeSelf);
+            PauseController.SetPause(_Menu.activeSelf);
         }
     }
 }

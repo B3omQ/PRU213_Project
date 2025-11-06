@@ -16,7 +16,7 @@ MonoBehaviour:
   _npcPortrait: {fileID: -3670919054317736195, guid: 93082e9f3ac434d43a87fdb7478a1b30, type: 3}
   _dialogueLines:
   - Hello fellas
-  - Would you like to buy some goods?
+  - Would you like to buy some goods? or Build some stuff
   - Have a great day!
   _autoProgressLines: 010100
   _endDialogueLines: 000001
@@ -27,11 +27,13 @@ MonoBehaviour:
   _choices:
   - _dialogueIndex: 1
     _choices:
-    - Sure mate
+    - i would like to shop
+    - 'i feed like building now '
     - not now buddy
-    _nextDialogueIndexes: 0200000002000000
+    _nextDialogueIndexes: 020000000200000002000000
     _givesQuest: 
-    _opensShop: 0100
+    _opensShop: 010000
+    _opensBuildingShop: 000100
   _questInProgressIndex: 0
   _questCompleteIndex: 0
   quest: {fileID: 0}

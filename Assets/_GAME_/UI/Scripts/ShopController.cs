@@ -4,18 +4,19 @@ using UnityEngine;
 public class ShopController : MonoBehaviour
 {
     public static ShopController Instance { get; private set; }
-    private bool _isOpen = false;
 
     [Header("References")]
     [SerializeField] private GameObject shopPanel;
-    [SerializeField] private GameObject shopItemEntryPrefab; // prefab UI (ShopItemEntry)
-    [SerializeField] private Transform contentParent;         // Content của ScrollView
+    [SerializeField] private GameObject shopItemEntryPrefab;
+    [SerializeField] private Transform contentParent;
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private PlayerCoinManager playerCoinManager;
 
+    [Header("Shop Settings")]
+    [SerializeField, Range(0f, 1f)] private float sellRate = 0.5f;
+
     [Header("Shop Items")]
     [SerializeField] private List<ShopItemData> shopItems = new List<ShopItemData>();
-
 
     private void Awake()
     {
@@ -25,24 +26,16 @@ public class ShopController : MonoBehaviour
             return;
         }
         Instance = this;
+        shopPanel?.SetActive(false);
+    }
 
-        if (shopPanel != null)
-            shopPanel.SetActive(false); // ẩn khi bắt đầu
-    }
-    private void Start()
-    {
-        PopulateShop();
-    }
+    private void Start() => PopulateShop();
 
     private void PopulateShop()
     {
-        // Xóa entry cũ (nếu có)
         foreach (Transform child in contentParent)
-        {
             Destroy(child.gameObject);
-        }
 
-        // Tạo entry mới cho từng item trong danh sách
         foreach (ShopItemData data in shopItems)
         {
             if (data.itemPrefab == null) continue;
@@ -53,25 +46,33 @@ public class ShopController : MonoBehaviour
             if (entryUI != null)
             {
                 Item item = data.itemPrefab.GetComponent<Item>();
-                if (item != null)
-                {
-                    Sprite icon = item.GetComponent<UnityEngine.UI.Image>()?.sprite;
+                if (item == null) continue;
 
-                    entryUI.SetupItem(
-                        data.itemPrefab,
-                        item.id,
-                        item.Name,
-                        icon,
-                        data.price,
-                        data.stock,
-                        () => OnBuyItem(data, entryUI)
-                    );
-                }
+                Sprite icon = item.GetComponent<UnityEngine.UI.Image>()?.sprite;
+                entryUI.SetupItem(
+                    data.itemPrefab,
+                    item.id,
+                    item.Name,
+                    icon,
+                    data.price,
+                    data.stock,
+                    () => OnItemButtonClicked(data, entryUI)
+                );
+
+                entryUI.SetButtonText(data.isSellMode ? "Sell" : "Buy");
             }
         }
     }
 
-    private void OnBuyItem(ShopItemData data, ShopItemUI entryUI)
+    private void OnItemButtonClicked(ShopItemData data, ShopItemUI entryUI)
+    {
+        if (data.isSellMode)
+            HandleSellItem(data, entryUI);
+        else
+            HandleBuyItem(data, entryUI);
+    }
+
+    private void HandleBuyItem(ShopItemData data, ShopItemUI entryUI)
     {
         if (data.stock <= 0)
         {
@@ -79,10 +80,9 @@ public class ShopController : MonoBehaviour
             return;
         }
 
-        // 🔹 Kiểm tra đủ tiền không
         if (!playerCoinManager.SpendCoins(data.price))
         {
-            Debug.Log("Không đủ tiền để mua vật phẩm này!");
+            Debug.Log("Không đủ tiền!");
             return;
         }
 
@@ -91,41 +91,52 @@ public class ShopController : MonoBehaviour
         {
             data.stock--;
             entryUI.UpdateStock(data.stock);
-            Debug.Log($"Đã mua {data.itemPrefab.name}, còn lại {data.stock}");
         }
         else
         {
-            Debug.Log("Inventory đầy, không thể mua!");
-            // hoàn lại tiền nếu mua thất bại
             playerCoinManager.AddCoins(data.price);
+            Debug.Log("Inventory đầy!");
         }
+    }
+
+    private void HandleSellItem(ShopItemData data, ShopItemUI entryUI)
+    {
+        Item item = data.itemPrefab.GetComponent<Item>();
+        if (item == null) return;
+
+        int sellPrice = Mathf.RoundToInt(data.price * sellRate);
+
+        var items = inventoryController._getItemCounts();
+        if (!items.ContainsKey(item.id) || items[item.id] <= 0)
+        {
+            Debug.Log($"Không có {item.Name} trong inventory để bán!");
+            return;
+        }
+
+        inventoryController.RemoveItemsFromInventory(item.id, 1);
+        playerCoinManager.AddCoins(sellPrice);
+        data.stock++;
+        entryUI.UpdateStock(data.stock);
+
+        Debug.Log($"Đã bán {item.Name} với giá {sellPrice} coins.");
     }
 
     public void OpenShop()
     {
-        if (shopPanel == null) return;
-
-        _isOpen = true;
-        shopPanel.SetActive(true);
-        Debug.Log("[ShopController] Shop opened!");
+        PauseController.SetPause(true);
+        shopPanel?.SetActive(true);
     }
-
     public void CloseShop()
     {
-        if (shopPanel == null) return;
-
-        _isOpen = false;
-        shopPanel.SetActive(false);
-        Debug.Log("[ShopController] Shop closed!");
+        PauseController.SetPause(false);
+        shopPanel?.SetActive(false);
     }
-
-    public bool IsOpen() => _isOpen;
 }
-
 [System.Serializable]
 public class ShopItemData
 {
-    public GameObject itemPrefab; // Prefab của Item
-    public int price = 100;       // Giá bán
-    public int stock = 5;         // Số lượng còn lại
+    public GameObject itemPrefab;
+    public int price = 100;
+    public int stock = 5;
+    public bool isSellMode = false;
 }
