@@ -57,7 +57,7 @@ public class SaveController : MonoBehaviour
             _questProgressData = QuestController.Instance.activateQuests
         };
 
-        string json = JsonUtility.ToJson(saveData, true); // pretty print
+        string json = JsonUtility.ToJson(saveData, true);
         Debug.Log("Saving JSON:\n" + json);
 
         File.WriteAllText(_saveLocation, json);
