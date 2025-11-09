@@ -5,8 +5,8 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rigid;
     public Transform player;   
     public float speed = 2f;
-    protected float maxHealth = 100f;
-    protected float currentHealth;
+    public float maxHealth = 100f;
+    public float currentHealth;
     public int expAmount = 100;
 
 
