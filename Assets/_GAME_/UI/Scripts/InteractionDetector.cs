@@ -16,10 +16,14 @@ public class InteractionDetector : MonoBehaviour
     {
         if (InputManager.InteractPressed)
         {
-            _interactableInRange?.Interact();
-            if (!_interactableInRange.CanInteract()) 
+            if (_interactableInRange != null)
             {
-                _interactionIcon.SetActive(false);
+                _interactableInRange.Interact();
+
+                if (!_interactableInRange.CanInteract())
+                {
+                    _interactionIcon.SetActive(false);
+                }
             }
         }
     }
