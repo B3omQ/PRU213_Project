@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -167575426429258219, guid: d9f92f15219ef274babc99d11856c65d, type: 3}
+    - target: {fileID: -8804204674992163344, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
       propertyPath: m_Name
       value: TomatoSeed Variant
@@ -130,7 +134,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8740935167221398787, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+    - {fileID: 5526489332517583523, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6897499243005822785}
   m_SourcePrefab: {fileID: 100100000, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+--- !u!1 &3941309951422268648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 45921582237345401, guid: 601c063d97514664d8d729a3dd3145cd, type: 3}
+  m_PrefabInstance: {fileID: 3896033602415846033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6897499243005822785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3941309951422268648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558d77e332a02a04a879099382cc93d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._GAME_.Plants.Script.SeedItem
+  id: 2
+  Name: TomatoSeed
+  quantity: 1
+  cropPrefab: {fileID: 2798592265801658917, guid: d167e33b1face7e4a9781289277f0ee5, type: 3}
+  plantRange: 1
