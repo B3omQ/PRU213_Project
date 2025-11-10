@@ -42,11 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897191929032354295, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 4897191929032354295, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 4897191929032354295, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
       propertyPath: m_LocalPosition.x
@@ -107,7 +107,7 @@ PrefabInstance:
     - target: {fileID: 6958053375121047580, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2453194478523169077, guid: e4f5b534e92cc5e4e85134540b4d3420, type: 3}
+      objectReference: {fileID: 8214766582821782872, guid: e4f5b534e92cc5e4e85134540b4d3420, type: 3}
     - target: {fileID: 7496904564108689741, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
       propertyPath: m_Name
       value: Grape Variant Variant
@@ -115,7 +115,15 @@ PrefabInstance:
     - target: {fileID: 7888144813729632964, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2453194478523169077, guid: e4f5b534e92cc5e4e85134540b4d3420, type: 3}
+      objectReference: {fileID: 8214766582821782872, guid: e4f5b534e92cc5e4e85134540b4d3420, type: 3}
+    - target: {fileID: 7888144813729632964, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888144813729632964, guid: 20589f9312c031a478c4d07c7f8b9d52, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1815101599
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

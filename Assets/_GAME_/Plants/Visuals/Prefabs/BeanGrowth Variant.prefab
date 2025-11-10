@@ -70,15 +70,15 @@ PrefabInstance:
       objectReference: {fileID: 8634889489699904201, guid: 29e3f8ff696efe3469c1b8078c1ac2a4, type: 3}
     - target: {fileID: 5334427741927144671, guid: 50ec602aa34a6364db2b5d16cfdd8a90, type: 3}
       propertyPath: 'stageDurations.Array.data[0]'
-      value: 26
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5334427741927144671, guid: 50ec602aa34a6364db2b5d16cfdd8a90, type: 3}
       propertyPath: 'stageDurations.Array.data[1]'
-      value: 36
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5334427741927144671, guid: 50ec602aa34a6364db2b5d16cfdd8a90, type: 3}
       propertyPath: 'stageDurations.Array.data[2]'
-      value: 46
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
