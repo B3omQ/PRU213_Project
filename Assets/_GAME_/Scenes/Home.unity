@@ -26739,6 +26739,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967728413}
   m_CullTransparentMesh: 1
+--- !u!1 &996260573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 996260576}
+  - component: {fileID: 996260575}
+  m_Layer: 0
+  m_Name: TreePrefabs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &996260575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996260573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e73cc0089fa7dbb4386f9b9dc6f5905e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  treePrefab: {fileID: 5826622895840749902, guid: 0ae3d12fcbbf87c4f9c29e3dcaa0d0e1, type: 3}
+  spawnAreaMin: {x: -10, y: -10}
+  spawnAreaMax: {x: 10, y: 10}
+  spawnInterval: 10
+  maxTrees: 20
+  checkRadius: 1
+  vegetationLayerName: Vegetation
+--- !u!4 &996260576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996260573}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1010503162
 GameObject:
   m_ObjectHideFlags: 0
@@ -31821,7 +31872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7013359234852762723, guid: be1666a5d6e30484b85f1418aa5766f5, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 7602426869936273926, guid: be1666a5d6e30484b85f1418aa5766f5, type: 3}
       propertyPath: _nameText
@@ -31855,6 +31906,10 @@ PrefabInstance:
     - target: {fileID: 1228547399781866967, guid: 608da8e11725f0b4a9a98b569461de86, type: 3}
       propertyPath: m_Name
       value: HouseBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 1228547399781866967, guid: 608da8e11725f0b4a9a98b569461de86, type: 3}
+      propertyPath: m_TagString
+      value: House
       objectReference: {fileID: 0}
     - target: {fileID: 3345796152181633667, guid: 608da8e11725f0b4a9a98b569461de86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -31915,7 +31970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1375835519382127195, guid: 7d5f25ef286f7b646bce46c778007857, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 3927866443335745835, guid: 7d5f25ef286f7b646bce46c778007857, type: 3}
       propertyPath: m_BodyType
@@ -32077,3 +32132,4 @@ SceneRoots:
   - {fileID: 393920914}
   - {fileID: 571338196}
   - {fileID: 1660186315}
+  - {fileID: 996260576}
