@@ -29,6 +29,9 @@ public class Enemy : MonoBehaviour
     private Transform targetPlant;
     private PlayerHealth _playerHealth;
 
+    private Transform targetItem;
+    public float itemDetectRange = 5f;
+
     private Vector2 spawnPoint;
     private Vector2 patrolTarget;
     private float patrolWaitTime = 2f;
@@ -37,7 +40,7 @@ public class Enemy : MonoBehaviour
     private bool isKnockedBack = false;
     private float knockbackTimer = 0f;
 
-    private enum State { Patrol, ChasePlayer, ChasePlant, Return }
+    private enum State { Patrol, ChasePlayer, ChasePlant, ChaseItem, Return }
     private State currentState = State.Patrol;
 
     protected virtual void Start()
@@ -85,6 +88,10 @@ public class Enemy : MonoBehaviour
 
             case State.Return:
                 ReturnToSpawn();
+                break;
+
+            case State.ChaseItem:
+                ChaseItemBehavior();
                 break;
         }
     }
@@ -139,6 +146,23 @@ public class Enemy : MonoBehaviour
                 return;
             }
         }
+
+        GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+        if (items.Length > 0)
+        {
+            var nearestItem = items
+                .Select(i => new { obj = i, dist = Vector2.Distance(transform.position, i.transform.position) })
+                .Where(x => x.dist <= itemDetectRange)
+                .OrderBy(x => x.dist)
+                .FirstOrDefault();
+
+            if (nearestItem != null)
+            {
+                targetItem = nearestItem.obj.transform;
+                currentState = State.ChaseItem;
+                return;
+            }
+        }
     }
 
     // -------------------- CHASE PLAYER --------------------
@@ -179,6 +203,35 @@ public class Enemy : MonoBehaviour
         if (dist <= attackRange)
             TryAttackPlant(targetPlant);
     }
+
+    // -------------------- CHASE ITEM --------------------
+    private void ChaseItemBehavior()
+    {
+        if (targetItem == null)
+        {
+            currentState = State.Return;
+            return;
+        }
+
+        float dist = Vector2.Distance(transform.position, targetItem.position);
+        if (dist > itemDetectRange * 1.5f || Vector2.Distance(transform.position, spawnPoint) > maxChaseDistance)
+        {
+            targetItem = null;
+            currentState = State.Return;
+            return;
+        }
+
+        MoveToward(targetItem.position);
+
+        if (dist <= 0.5f) // khoảng cách đủ gần để lấy item
+        {
+            Debug.Log("Enemy collected item!");
+            Destroy(targetItem.gameObject);
+            targetItem = null;
+            currentState = State.Return;
+        }
+    }
+
 
     // -------------------- RETURN --------------------
     private void ReturnToSpawn()
