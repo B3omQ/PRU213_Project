@@ -1,350 +1,276 @@
 using UnityEngine;
+using System.Linq;
 
-namespace Game.Animal
+public class Animal : MonoBehaviour
 {
-    public class Animal : MonoBehaviour
+    private Rigidbody2D rigid;
+    public Transform player;
+
+    [Header("Stats")]
+    public float speed = 2f;
+    public float maxHealth = 100f;
+    public float currentHealth;
+    public int expAmount = 50; // Ít exp hơn enemy
+    public float fleeSpeedMultiplier = 1.5f; // Chạy nhanh hơn khi sợ
+
+    [Header("Ranges")]
+    public float playerDetectRange = 5f; // Phát hiện player
+    public float fleeRange = 7f; // Khoảng cách an toàn để dừng chạy
+    public float patrolRadius = 4f;
+    public float maxWanderDistance = 8f;
+
+    [Header("Loot Settings")]
+    public GameObject[] lootPrefabs; // Vật phẩm rơi ra khi chết (meat, fur, etc.)
+    public int[] lootAmounts; // Số lượng mỗi loại vật phẩm
+    public float lootDropChance = 1f; // Tỷ lệ rơi vật phẩm (1 = 100%)
+
+    [Header("Knockback Settings")]
+    public float knockbackForce = 5f;         // lực đẩy
+    public float knockbackDuration = 0.2f;    // thời gian bị đẩy
+
+    private Vector2 spawnPoint;
+    private Vector2 patrolTarget;
+    private float patrolWaitTime = 2f;
+    private float patrolTimer = 0f;
+    private float idleTime = 0f;
+    private float idleDuration = 1f;
+
+    private bool isKnockedBack = false;
+    private float knockbackTimer = 0f;
+    private bool isFleeing = false;
+
+    private enum State { Patrol, Flee, Return, Idle }
+    private State currentState = State.Patrol;
+
+    protected virtual void Start()
     {
-        [Header("Animal Properties")]
-        public AnimalType animalType;
-        public float moveSpeed = 2f;
-        public float health = 100f;
-        public float maxHealth = 100f;
-        
-        [Header("Components")]
-        private SpriteRenderer spriteRenderer;
-        private Animator animator;
-        private Rigidbody2D rb;
-        
-        [Header("Movement")]
-        public Vector2 moveDirection;
-        public bool isMoving = false;
-        
-        [Header("Animation States")]
-        public bool hasLyingAnimation = true;
-        public float lyingThreshold = 0.1f; // Tốc độ dưới ngưỡng này sẽ nằm
-        public float lyingDelay = 2f; // Thời gian chờ trước khi nằm
-        private float stationaryTime = 0f;
-        private bool isLying = false;
-        
-        [Header("Area Movement")]
-        public Transform areaCenter;
-        public float areaRadius = 10f;
-        public bool stayInArea = true;
-        public float changeDirectionInterval = 3f;
-        private float lastDirectionChange;
-        
-        [Header("Drop Items")]
-        public GameObject[] dropItems;
-        public float[] dropChances = { 1f };
-        public int minDropAmount = 1;
-        public int maxDropAmount = 3;
-        
-        [Header("Pooling")]
-        public bool isActive = false;
-        
-        private void Awake()
+        rigid = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
+        spawnPoint = transform.position;
+
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        SetNewPatrolTarget();
+    }
+
+    protected virtual void Update()
+    {
+        if (isKnockedBack)
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            animator = GetComponent<Animator>();
-            rb = GetComponent<Rigidbody2D>();
-        }
-        
-        private void Start()
-        {
-            health = maxHealth;
-        }
-        
-        private void Update()
-        {
-            if (isActive)
+            knockbackTimer += Time.deltaTime;
+            if (knockbackTimer >= knockbackDuration)
             {
-                if (isMoving)
-                {
-                    Move();
-                    CheckAreaBoundary();
-                    CheckDirectionChange();
-                }
-                
-                // Kiểm tra animation nằm/xuống
-                CheckLyingAnimation();
+                isKnockedBack = false;
+                knockbackTimer = 0f;
             }
+            return; // tạm dừng hành động trong lúc knockback
         }
-        
-        private void Move()
+
+        switch (currentState)
         {
-            if (rb != null)
-            {
-                rb.linearVelocity = moveDirection * moveSpeed;
-            }
-            else
-            {
-                transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
-            }
-        }
-        
-        public void SetAnimalType(AnimalType type)
-        {
-            animalType = type;
-            // Có thể thêm logic để thay đổi sprite dựa trên type
-        }
-        
-        public void SetSprite(Sprite sprite)
-        {
-            if (spriteRenderer != null)
-            {
-                spriteRenderer.sprite = sprite;
-            }
-        }
-        
-        public void SetRandomDirection()
-        {
-            moveDirection = new Vector2(
-                Random.Range(-1f, 1f),
-                Random.Range(-1f, 1f)
-            ).normalized;
-        }
-        
-        public void TakeDamage(float damage)
-        {
-            health -= damage;
-            if (health <= 0)
-            {
-                Die();
-            }
-        }
-        
-        private void Die()
-        {
-            // Drop items trước khi chết
-            DropItems();
-            
-            isActive = false;
-            // Gọi object pool để return object
-            AnimalPool.Instance.ReturnToPool(this);
-        }
-        
-        public void Activate()
-        {
-            isActive = true;
-            gameObject.SetActive(true);
-            health = maxHealth;
-        }
-        
-        public void Deactivate()
-        {
-            isActive = false;
-            gameObject.SetActive(false);
-        }
-        
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            // Logic xử lý va chạm với player hoặc các object khác
-            if (other.CompareTag("Player"))
-            {
-                // Có thể thêm logic tương tác với player
-            }
-        }
-        
-        // Kiểm tra biên giới vùng di chuyển
-        private void CheckAreaBoundary()
-        {
-            if (!stayInArea || areaCenter == null) return;
-            
-            float distanceFromCenter = Vector2.Distance(transform.position, areaCenter.position);
-            
-            if (distanceFromCenter > areaRadius)
-            {
-                // Quay lại hướng về trung tâm
-                Vector2 directionToCenter = (areaCenter.position - transform.position).normalized;
-                moveDirection = directionToCenter;
-            }
-        }
-        
-        // Kiểm tra thay đổi hướng di chuyển
-        private void CheckDirectionChange()
-        {
-            if (Time.time - lastDirectionChange >= changeDirectionInterval)
-            {
-                SetRandomDirection();
-                lastDirectionChange = Time.time;
-            }
-        }
-        
-        // Drop items khi chết
-        private void DropItems()
-        {
-            if (dropItems == null || dropItems.Length == 0) return;
-            
-            int dropAmount = Random.Range(minDropAmount, maxDropAmount + 1);
-            
-            for (int i = 0; i < dropAmount; i++)
-            {
-                // Chọn item ngẫu nhiên dựa trên drop chances
-                int itemIndex = GetRandomItemIndex();
-                if (itemIndex >= 0 && itemIndex < dropItems.Length)
-                {
-                    GameObject itemToDrop = dropItems[itemIndex];
-                    if (itemToDrop != null)
-                    {
-                        // Tạo item tại vị trí animal
-                        Vector3 dropPosition = transform.position + Random.insideUnitSphere * 2f;
-                        dropPosition.z = 0; // 2D game
-                        
-                        GameObject droppedItem = Instantiate(itemToDrop, dropPosition, Quaternion.identity);
-                        
-                        // Thêm force ngẫu nhiên để item bay ra
-                        Rigidbody2D itemRb = droppedItem.GetComponent<Rigidbody2D>();
-                        if (itemRb != null)
-                        {
-                            Vector2 randomForce = Random.insideUnitCircle * 5f;
-                            itemRb.AddForce(randomForce, ForceMode2D.Impulse);
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Chọn item index dựa trên drop chances
-        private int GetRandomItemIndex()
-        {
-            if (dropChances == null || dropChances.Length == 0) return 0;
-            
-            float totalChance = 0f;
-            foreach (float chance in dropChances)
-            {
-                totalChance += chance;
-            }
-            
-            float randomValue = Random.Range(0f, totalChance);
-            float currentChance = 0f;
-            
-            for (int i = 0; i < dropChances.Length; i++)
-            {
-                currentChance += dropChances[i];
-                if (randomValue <= currentChance)
-                {
-                    return i;
-                }
-            }
-            
-            return 0; // Fallback
-        }
-        
-        // Setup area movement
-        public void SetAreaCenter(Transform center, float radius)
-        {
-            areaCenter = center;
-            areaRadius = radius;
-        }
-        
-        // Setup drop items
-        public void SetDropItems(GameObject[] items, float[] chances, int minAmount, int maxAmount)
-        {
-            dropItems = items;
-            dropChances = chances;
-            minDropAmount = minAmount;
-            maxDropAmount = maxAmount;
-        }
-        
-        // Kiểm tra animation nằm/xuống
-        private void CheckLyingAnimation()
-        {
-            if (!hasLyingAnimation || animator == null) return;
-            
-            // Kiểm tra tốc độ di chuyển
-            float currentSpeed = 0f;
-            if (rb != null)
-            {
-                currentSpeed = rb.linearVelocity.magnitude;
-            }
-            else
-            {
-                currentSpeed = moveDirection.magnitude * moveSpeed;
-            }
-            
-            // Nếu di chuyển chậm hơn ngưỡng
-            if (currentSpeed < lyingThreshold)
-            {
-                stationaryTime += Time.deltaTime;
-                
-                // Nếu đã đứng yên đủ lâu và chưa nằm
-                if (stationaryTime >= lyingDelay && !isLying)
-                {
-                    SetLyingState(true);
-                }
-            }
-            else
-            {
-                // Nếu đang di chuyển, reset thời gian và đứng dậy
-                stationaryTime = 0f;
-                if (isLying)
-                {
-                    SetLyingState(false);
-                }
-            }
-        }
-        
-        // Đặt trạng thái nằm/xuống
-        private void SetLyingState(bool lying)
-        {
-            isLying = lying;
-            
-            if (animator != null)
-            {
-                // Sử dụng Animator parameters
-                animator.SetBool("IsLying", lying);
-                animator.SetBool("IsMoving", !lying && isMoving);
-            }
-            else
-            {
-                // Fallback: thay đổi sprite trực tiếp
-                // Có thể thêm logic thay đổi sprite ở đây
-                Debug.Log($"Animal {animalType} is now {(lying ? "lying down" : "standing up")}");
-            }
-        }
-        
-        // Public methods để control animation
-        public void ForceLying()
-        {
-            if (hasLyingAnimation)
-            {
-                SetLyingState(true);
-            }
-        }
-        
-        public void ForceStanding()
-        {
-            if (hasLyingAnimation)
-            {
-                SetLyingState(false);
-                stationaryTime = 0f;
-            }
-        }
-        
-        public bool IsLying()
-        {
-            return isLying;
+            case State.Patrol:
+                PatrolBehavior();
+                DetectPlayer();
+                break;
+
+            case State.Flee:
+                FleeBehavior();
+                break;
+
+            case State.Return:
+                ReturnToSpawn();
+                break;
+
+            case State.Idle:
+                IdleBehavior();
+                DetectPlayer();
+                break;
         }
     }
-    
-    public enum AnimalType
+
+    // -------------------- PATROL --------------------
+    private void PatrolBehavior()
     {
-        Cat,
-        CatCyclop,
-        Chicken,
-        Cow,
-        Cub,
-        Dog,
-        Dog2,
-        Donkey,
-        Fish,
-        Frog,
-        Horse,
-        Lion,
-        Lioness,
-        Monkey,
-        Parrot,
-        Pig,
-        Racoon
+        MoveToward(patrolTarget);
+
+        if (Vector2.Distance(transform.position, patrolTarget) < 0.5f)
+        {
+            rigid.linearVelocity = Vector2.zero;
+            patrolTimer += Time.deltaTime;
+
+            if (patrolTimer >= patrolWaitTime)
+            {
+                // Có thể chuyển sang idle hoặc tìm điểm mới
+                if (Random.value < 0.3f) // 30% chance để idle
+                {
+                    currentState = State.Idle;
+                    idleTime = 0f;
+                }
+                else
+                {
+                    SetNewPatrolTarget();
+                }
+                patrolTimer = 0f;
+            }
+        }
+    }
+
+    private void SetNewPatrolTarget()
+    {
+        Vector2 randomPoint = spawnPoint + Random.insideUnitCircle * patrolRadius;
+        patrolTarget = randomPoint;
+    }
+
+    // -------------------- IDLE --------------------
+    private void IdleBehavior()
+    {
+        rigid.linearVelocity = Vector2.zero;
+        idleTime += Time.deltaTime;
+
+        if (idleTime >= idleDuration)
+        {
+            currentState = State.Patrol;
+            SetNewPatrolTarget();
+            idleTime = 0f;
+        }
+    }
+
+    // -------------------- DETECT PLAYER --------------------
+    private void DetectPlayer()
+    {
+        if (player == null) return;
+
+        float distToPlayer = Vector2.Distance(transform.position, player.position);
+        if (distToPlayer <= playerDetectRange)
+        {
+            currentState = State.Flee;
+            isFleeing = true;
+            return;
+        }
+    }
+
+    // -------------------- FLEE FROM PLAYER --------------------
+    private void FleeBehavior()
+    {
+        if (player == null)
+        {
+            currentState = State.Return;
+            return;
+        }
+
+        float distToPlayer = Vector2.Distance(transform.position, player.position);
+        float distFromSpawn = Vector2.Distance(transform.position, spawnPoint);
+
+        // Nếu player xa hoặc đã chạy quá xa spawn point, quay về
+        if (distToPlayer > fleeRange || distFromSpawn > maxWanderDistance)
+        {
+            isFleeing = false;
+            currentState = State.Return;
+            return;
+        }
+
+        // Chạy khỏi player
+        Vector2 fleeDirection = ((Vector2)transform.position - (Vector2)player.position).normalized;
+        Vector2 fleeTarget = (Vector2)transform.position + fleeDirection * 3f; // Chạy về phía đối diện player
+        MoveToward(fleeTarget, speed * fleeSpeedMultiplier);
+    }
+
+    // -------------------- RETURN --------------------
+    private void ReturnToSpawn()
+    {
+        MoveToward(spawnPoint);
+
+        if (Vector2.Distance(transform.position, spawnPoint) < 0.5f)
+        {
+            rigid.linearVelocity = Vector2.zero;
+            currentState = State.Patrol;
+            SetNewPatrolTarget();
+        }
+    }
+
+    // -------------------- MOVE --------------------
+    private void MoveToward(Vector2 targetPos, float moveSpeed = -1f)
+    {
+        if (moveSpeed < 0)
+            moveSpeed = speed;
+
+        Vector2 dir = (targetPos - (Vector2)transform.position).normalized;
+        rigid.linearVelocity = dir * moveSpeed;
+    }
+
+    // -------------------- DAMAGE & KNOCKBACK --------------------
+    public virtual void TakeDamage(float dmg, Vector2 attackerPos)
+    {
+        currentHealth -= dmg;
+
+        // Knockback
+        Vector2 knockDir = ((Vector2)transform.position - attackerPos).normalized;
+        rigid.linearVelocity = Vector2.zero;
+        rigid.AddForce(knockDir * knockbackForce, ForceMode2D.Impulse);
+
+        isKnockedBack = true;
+        knockbackTimer = 0f;
+
+        // Khi bị tấn công, chuyển sang trạng thái flee
+        if (currentHealth > 0 && !isFleeing)
+        {
+            currentState = State.Flee;
+            isFleeing = true;
+        }
+
+        if (currentHealth <= 0)
+            Die();
+    }
+
+    protected virtual void Die()
+    {
+        // Rơi vật phẩm
+        DropLoot();
+
+        // Có thể cho exp nếu cần
+        if (expAmount > 0 && ExpController.instance != null)
+        {
+            ExpController.instance.AddExp(expAmount);
+        }
+
+        gameObject.SetActive(false);
+    }
+
+    // -------------------- DROP LOOT --------------------
+    private void DropLoot()
+    {
+        if (lootPrefabs == null || lootPrefabs.Length == 0) return;
+        if (Random.value > lootDropChance) return; // Không rơi vật phẩm nếu không đủ tỷ lệ
+
+        for (int i = 0; i < lootPrefabs.Length; i++)
+        {
+            if (lootPrefabs[i] == null) continue;
+
+            int amount = 1;
+            if (lootAmounts != null && i < lootAmounts.Length)
+                amount = lootAmounts[i];
+
+            for (int j = 0; j < amount; j++)
+            {
+                // Random vị trí xung quanh animal
+                Vector2 dropOffset = Random.insideUnitCircle * 0.5f;
+                Vector2 dropPosition = (Vector2)transform.position + dropOffset;
+
+                GameObject loot = Instantiate(lootPrefabs[i], dropPosition, Quaternion.identity);
+
+                // Có thể thêm bounce effect nếu có component
+                BounceEffect bounce = loot.GetComponent<BounceEffect>();
+                if (bounce != null)
+                    bounce.StartBounce();
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Animals không nhặt items như enemies
+        // Có thể bỏ qua hoặc để trống
     }
 }
+
