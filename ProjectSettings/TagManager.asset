@@ -8,6 +8,9 @@ TagManager:
   - TilledSoil
   - Planted
   - MapBound
+  - Tree
+  - House
+  - NPC
   layers:
   - Default
   - TransparentFX

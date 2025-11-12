@@ -13630,6 +13630,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Tree
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 648
+        width: 47
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edb450a5bc1ff994387046b2f54b5e0b
+      internalID: 422658173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -13653,6 +13675,7 @@ TextureImporter:
       Grass_5: -1423130727
       Grass_Base: 567954377
       TilledTile: -360202614
+      Tree: 422658173
       island_Bottom: -1581668039
       island_BottomLeft: 290672528
       island_BottomRight: 2090447509

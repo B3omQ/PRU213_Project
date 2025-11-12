@@ -11,11 +11,13 @@ public class HoeTool : Item
 
 
     [Header("Hoe Settings")]
-    public float hoeRange = 1f;     // Khoảng cách cuốc
+    public float hoeRange = 1f;     
 
     [Header("Animation")]
-    public Animator animator;       // Animator của người chơi
+    public Animator animator;
 
+    [Header("Tilled Lifetime")]
+    public float tilledDuration = 30f;
     public override void UseItem(Transform playerRef, Tilemap tilledTilemapRef, TileBase tilledTileRef, Tilemap groundTilemapRef)
     {
         player = playerRef;
@@ -62,5 +64,20 @@ public class HoeTool : Item
         // Cuốc đất
         tilledTilemap.SetTile(cellPos, tilledTile);
         Debug.Log($"✅ Đã cuốc ô {cellPos}");
+        StartCoroutine(RemoveTilledAfterDelay(cellPos, tilledDuration));
+
+    }
+
+    private IEnumerator RemoveTilledAfterDelay(Vector3Int cellPos, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Kiểm tra ô này vẫn còn đất đã cuốc thì mới xóa
+        TileBase currentTile = tilledTilemap.GetTile(cellPos);
+        if (currentTile == tilledTile)
+        {
+            tilledTilemap.SetTile(cellPos, null);
+            Debug.Log($"⏳ Ô {cellPos} đã biến mất sau {delay} giây.");
+        }
     }
 }

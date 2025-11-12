@@ -1,20 +1,13 @@
 using UnityEngine;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingsMenuController : MonoBehaviour
 {
-    [SerializeField] private Button saveButton;
-    [SerializeField] private Button loadButton;
-
-    private void Start()
-    {
-        saveButton.onClick.AddListener(OnSaveGame);
-        loadButton.onClick.AddListener(OnLoadGame);
-    }
-
-    private void OnSaveGame()
+    [SerializeField] private GameObject _DeadPanel;
+    public void OnSaveGame()
     {
         if (SaveController.Instance != null)
         {
@@ -27,18 +20,37 @@ public class SettingsMenuController : MonoBehaviour
         }
     }
 
-    private void OnLoadGame()
+    public void OnLoadGame()
     {
         if (SaveController.Instance != null)
         {
             var data = SaveController.Instance.LoadGameData();
             SaveController.Instance.ApplySaveData(data);
             Debug.Log("[SettingsMenu] Game loaded!");
+            _DeadPanel.SetActive(false);
+            PauseController.SetPause(false);
         }
         else
         {
             Debug.LogWarning("[SettingsMenu] SaveController not found!");
         }
+    }
+
+    public void OnNewGame()
+    {
+        //if (SaveController.Instance != null)
+        //{
+        //    SaveController.Instance.NewGame();
+        //    Debug.Log("[SettingsMenu] New game!");
+        //    _DeadPanel.SetActive(false);
+        PauseController.SetPause(false);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("[SettingsMenu] SaveController not found!");
+        //}
+
+        SceneManager.LoadScene("StartScenes");
     }
 }
 
